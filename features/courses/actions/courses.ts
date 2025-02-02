@@ -17,21 +17,21 @@ export async function createCourse(unparsedValues: z.infer<typeof couseSchema>) 
 }
 
 
-export  async function deleteCourse(id:string) {
+export async function deleteCourse(id: string) {
     if (!candeleteCourse(await getCurrentUser())) {
-        return { error: true, message: "Failed to Delete Your  Course" }
+        return { error: true, message: "Failed to Delete Your Course" }
     }
     await deleteCourseDB(id)
-    return { success: false,message:'successfully deleted course' }
+    return { error: false, message: 'successfully deleted course' }
 
 }
-export async function updateCourse(id: string,unparsedValues: z.infer<typeof couseSchema>) {
+export async function updateCourse(id: string, unparsedValues: z.infer<typeof couseSchema>) {
     const { success, data } = couseSchema.safeParse(unparsedValues)
 
     if (!success || !canUpdateCourses(await getCurrentUser())) {
         return { error: true, message: "there is an error in data" }
     }
-    await updateCourseDb(id,data)
-    return { success: false,message:'successfully Update course' }
+    await updateCourseDb(id, data)
+    return { error: false, message: 'successfully Update course' }
 }
 

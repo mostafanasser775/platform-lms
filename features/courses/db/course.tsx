@@ -3,7 +3,6 @@ import { CourseTable } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 
 export async function insertCourse(data: typeof CourseTable.$inferInsert) {
-    console.log(data)
     const [newCourse] = await db.insert(CourseTable).values(data).returning();
     if (newCourse === null) throw new Error("Failed to create course");
     return newCourse

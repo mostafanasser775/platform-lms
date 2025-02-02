@@ -24,14 +24,9 @@ export function CourseForm({ course }: { course?: { id: string, name: string, de
     async function onSubmit(values: z.infer<typeof couseSchema>) {
         const action = course == null ? createCourse : updateCourse.bind(null, course.id, values)
         const result = await action(values)
-        if (result)
+        if (result.error === false)
             router.refresh()
-        actionToast({
-            toastData: {
-                error: result.error ? result.message : undefined,
-                message: result.message,
-            },
-        })
+        actionToast({ toastData: result });
     }
     return (
         <div>
@@ -42,19 +37,17 @@ export function CourseForm({ course }: { course?: { id: string, name: string, de
                             <FormItem>
                                 <FormLabel>Name</FormLabel>
                                 <RequiredLabelIcon />
-                                <FormControl><Input {...field} /></FormControl>
+                                <FormControl><Input {...field} className="border-gray-300 rounded-md" /></FormControl>
                                 <FormMessage />
-
                             </FormItem>
                         )}
                     />
-
                     <FormField control={form.control} name="description"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Description</FormLabel>
                                 <RequiredLabelIcon />
-                                <FormControl><Textarea className="min-h-20 resize-none" {...field} /></FormControl>
+                                <FormControl><Textarea className="min-h-20 resize-none border-gray-300 rounded-md" {...field} /></FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -64,7 +57,6 @@ export function CourseForm({ course }: { course?: { id: string, name: string, de
                     </div>
                 </form>
             </Form>
-
         </div>
     )
 }

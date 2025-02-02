@@ -15,8 +15,8 @@ import {
     AlertDialogCancel,
     AlertDialogAction,
 } from "./ui/alert-dialog"
-import { toast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
+import { actionToast } from "./ui/toast"
 
 export function ActionButton({
     action,
@@ -24,7 +24,7 @@ export function ActionButton({
     ...props
 }: Omit<ComponentPropsWithRef<typeof Button>, "onClick"> & {
     action: () => Promise<{ error: boolean; message: string }>
-    requireAreYouSure?: boolean
+    requireAreYouSure?: boolean,
 }) {
     {
         const [isLoading, startTransition] = useTransition()
@@ -33,13 +33,8 @@ export function ActionButton({
         function performAction() {
             startTransition(async () => {
                 const data = await action()
-                if (data)
-                    toast({
-                        variant: 'destructive',
-                        title: "deleted",
-                    })
                 router.refresh()
-                //actionToast({ actionData: data })
+                actionToast({ toastData: data })
             })
         }
 

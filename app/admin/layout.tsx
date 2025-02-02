@@ -12,8 +12,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     </>;
 }
 function NavBar() {
+    
     return <header className="flex shadow-md h-12  bg-background z-10">
-        <nav className="flex gap-4 container ">
+        <nav className="flex gap-4 container " suppressHydrationWarning>
             <Link className="mr-auto text-lg hover:underline flex items-center" href="/admin">LMS</Link>
             <Suspense>
                 <SignedIn>

@@ -130,7 +130,8 @@ export {
   actionToast
 
 }
- function actionToast({ toastData }: { toastData: { error?: string, success?: string, message?: string } }) {
+ function actionToast({ toastData }: { toastData: { error: boolean, message: string; } }) {
+  console.log(toastData)
   return (
     toast({
       title: toastData.error ? "Error" : "Success",
