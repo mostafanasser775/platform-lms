@@ -14,8 +14,8 @@ import { LessonStatus, lessonStatuses } from "@/drizzle/schema";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { lessonSchema } from "../schema/lesson";
 import { Textarea } from "@/components/ui/textarea";
-import { createLessonAction, updateLessonAction } from "../actions/lesson";
 import { YouTubeVideoPlayer } from "./YoutubeVideoPlayer";
+import { createLessonAction, updateLessonAction } from "../actions/lesson";
 export function LessonForm({ sections, defaultSectionId, lesson, onSuccess }:
     {
         sections: { id: string, name: string, }[],

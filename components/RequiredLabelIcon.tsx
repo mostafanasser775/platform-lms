@@ -7,9 +7,11 @@ export function RequiredLabelIcon({
   ...props
 }: ComponentPropsWithoutRef<typeof AsteriskIcon>) {
   return (
+    <div className="inline">
     <AsteriskIcon
       {...props}
-      className={cn("text-destructive inline size-4 align-top", className)}
+      className={cn(" text-destructive inline size-4 align-top", className)}
     />
+    </div>
   )
 }
