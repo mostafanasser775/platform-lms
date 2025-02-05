@@ -4,7 +4,7 @@ import { LessonStatus } from "@/drizzle/schema";
 import { ReactNode, useState } from "react";
 import { LessonForm } from "./LessonForm";
 
-export function LessonFormDialog({ sections,lesson, children,
+export function LessonFormDialog({ sections, lesson, children,
     defaultSectionId
 }: {
     sections: { id: string, name: string }[],
@@ -22,15 +22,15 @@ export function LessonFormDialog({ sections,lesson, children,
 }) {
     const [isOpen, setIsOpen] = useState(false);
     return (<>
-        <Dialog open={isOpen} onOpenChange={setIsOpen} >
+        <Dialog open={isOpen} onOpenChange={setIsOpen}   >
             {children}
-            <DialogContent>
+            <DialogContent className=" max-h-screen overflow-auto">
                 <DialogHeader>
                     <DialogTitle>{!lesson ? "Add Lesson" : `Edit Lesson ${lesson.name}`}</DialogTitle>
                 </DialogHeader>
                 <div className=" mt-4">
                     <LessonForm sections={sections} defaultSectionId={defaultSectionId}
-                    lesson={lesson} onSuccess={() => setIsOpen(false)} />
+                        lesson={lesson} onSuccess={() => setIsOpen(false)} />
 
                 </div>
             </DialogContent>

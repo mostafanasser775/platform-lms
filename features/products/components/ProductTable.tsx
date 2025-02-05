@@ -22,7 +22,7 @@ export function ProductTable({ products }: {
     }[]
 }) {
     return (
-        <div className="container ">
+        <div className=" ">
             <Table>
                 <TableHeader>
                     <TableRow>
