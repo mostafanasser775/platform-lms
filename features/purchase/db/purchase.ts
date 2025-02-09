@@ -1,5 +1,6 @@
 import { db } from "@/drizzle/db";
 import { PurchaseTable } from "@/drizzle/schema";
+import { eq } from "drizzle-orm";
 
 export async function insertPurchaseDB(data: typeof PurchaseTable.$inferInsert, trx: Omit<typeof db, '$client'> = db) {
     const details = data.productDetails
@@ -16,4 +17,21 @@ export async function insertPurchaseDB(data: typeof PurchaseTable.$inferInsert, 
     ).onConflictDoNothing().returning();
     if (newPurchase === null) throw new Error("Failed to create purchase");
     return newPurchase
+}
+export async function UpdatePurchaseDB(id: string, data: Partial<typeof PurchaseTable.$inferInsert>, trx: Omit<typeof db, '$client'> = db) {
+    const details = data.productDetails
+    const [UpdatedPurchase] = await trx.update(PurchaseTable).set(
+        {
+                
+            ...data,
+            productDetails: details ? {
+                name: details.name,
+                description: details.description,
+                imageUrl: details.imageUrl,
+
+            } : undefined
+        }
+    ).where(eq(PurchaseTable.id, id)).returning();
+    if (UpdatedPurchase === null) throw new Error("Failed to create purchase");
+    return UpdatedPurchase
 }
