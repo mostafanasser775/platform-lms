@@ -6,7 +6,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { BookOpen, LayoutDashboard, Menu, Package, ShoppingBag, X, Settings, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-
 export function AdminWrapperLayout({ children }: { children: ReactNode }) {
     return (
         <div className="flex">
@@ -62,7 +61,7 @@ function Sidebar() {
         )}>
             {/* Sidebar Header */}
             <div className="border-b p-4 flex items-center justify-between border-gray-300">
-                {isOpen && <Link href="/admin" className="font-bold text-xl hidden md:block">Admin Panel</Link>}
+                {isOpen && <Link href="/admin" className="font-bold text-xl hidden md:block">EduNexus</Link>}
                 <button onClick={() => setIsOpen(!isOpen)} className="p-2 rounded-md focus:outline-none">
                     {isOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
