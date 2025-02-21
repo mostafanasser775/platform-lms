@@ -15,6 +15,7 @@ import Image from "next/image";
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { VideoIcon } from "lucide-react";
+
 export default async function ProductPage({ params }: { params: Promise<{ productId: string }> }) {
     const { productId } = await params;
     const Product = await getPublicProduct(productId)
