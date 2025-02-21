@@ -13,6 +13,7 @@ export const LessonTable = pgTable("lessons", {
     name: text().notNull(),
     description: text(),
     youtubeVideoId: text().notNull(),
+    videoUrl: text().notNull(),
     order: integer().notNull(),
     status: lessonStatusEnum().notNull().default("private"),
     sectionId: uuid().notNull().references(() => CourseSectionTable.id, { onDelete: "cascade" }),

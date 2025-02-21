@@ -1,0 +1,1 @@
+ALTER TABLE "lessons" ADD COLUMN "try" text NOT NULL;

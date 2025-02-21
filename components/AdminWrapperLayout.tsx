@@ -16,7 +16,7 @@ export function AdminWrapperLayout({ children }: { children: ReactNode }) {
 
             <div className="w-full h-full min-h-screen overflow-auto">
                 <Toaster />
-                <NavBar /> 
+                <NavBar />
                 {children}</div>
         </div>
     );
@@ -26,14 +26,10 @@ function NavBar() {
     return (
         <header className="flex w-full h-14 border-b z-10 bg-white">
             <nav className="flex gap-4 container items-center px-4" suppressHydrationWarning>
-                <Suspense>
+                <Suspense fallback={<div>...loading</div>}>
                     <SignedIn>
                         <div className="size-8 self-center ml-auto mr-4">
-                            <UserButton appearance={{
-                                elements: {
-                                    userButtonAvatarBox: { width: "100%", height: "100%" }
-                                }
-                            }} />
+                            <UserButton appearance={{ elements: { userButtonAvatarBox: { width: "100%", height: "100%" } } }} />
                         </div>
                     </SignedIn>
                 </Suspense>

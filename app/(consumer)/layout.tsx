@@ -1,5 +1,5 @@
 'use server';
-import { Button } from "@/components/ui/button";
+import { Providers } from "@/lib/Providers";
 import { getCurrentUser } from "@/services/clerk";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
@@ -7,15 +7,21 @@ import { Suspense } from "react";
 
 export default async function ConsumerLayout({ children }: { children: React.ReactNode }) {
     return <>
-        <NavBar />
-        {children}
+        <Providers>
+            <NavBar />
+            {children}
+        </Providers>
+
+
+
+
     </>;
 }
 function NavBar() {
     return <header className="flex shadow-md h-12  bg-background z-10">
         <nav className="flex gap-4 container ">
             <Link className="mr-auto text-lg hover:underline px-2 flex items-center" href="/admin">LMS</Link>
-            <Suspense>
+            <Suspense fallback={<div>...</div>}>
                 <SignedIn>
                     <AdminLink />
                     <Link className=" hover:bg-red-200 px-2 flex items-center" href={'/courses'}>My Courses</Link>
@@ -31,9 +37,10 @@ function NavBar() {
             </Suspense>
             <Suspense>
                 <SignedOut>
-                    <Button className="self-center" asChild>
+                    <div className="border rounded-medium self-center py-2 px-3 ">
                         <SignInButton />
-                    </Button>
+
+                    </div>
                 </SignedOut>
             </Suspense>
         </nav>
@@ -42,7 +49,7 @@ function NavBar() {
 }
 async function AdminLink() {
     const user = await getCurrentUser()
-    if(user.role !== 'admin') return null
+    if (user.role !== 'admin') return null
     return (
         <Link className=" hover:bg-red-200 px-2 flex items-center" href={'/admin'}>Admin Panel</Link>
 

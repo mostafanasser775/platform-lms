@@ -6,4 +6,5 @@ export * from "./schema/product";
 export * from "./schema/purches";
 export * from "./schema/user";
 export * from "./schema/userCourseAccess";
-export * from "./schema/userLessonComplete"; 
+export * from "./schema/userLessonComplete";
+//export * from "./schema/userSchema"

@@ -7,7 +7,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { RequiredLabelIcon } from "@/components/RequiredLabelIcon";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { actionToast } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
 import { productSchema } from "../schema/products";
@@ -15,6 +14,8 @@ import { ProdcutStatus, productStatuses } from "@/drizzle/schema/product";
 import { createProductAction, updateProductAction } from "../actions/product";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MultiSelect } from "@/components/ui/custom/multi-select";
+import { Button } from "@heroui/button";
+import ImageUpload from "@/components/ImageUpload";
 export function ProductForm({ product, courses }: {
     product?: {
         id: string,
@@ -79,18 +80,7 @@ export function ProductForm({ product, courses }: {
                                 </FormItem>
                             )}
                         />
-                        <FormField control={form.control} name="imageUrl"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Image Url</FormLabel>
-                                    <RequiredLabelIcon />
-                                    <FormControl>
-                                        <Input {...field} className="border-gray-300 rounded-md" />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+
                         <FormField control={form.control} name="status"
                             render={({ field }) => (
                                 <FormItem>
@@ -131,8 +121,18 @@ export function ProductForm({ product, courses }: {
                                 </FormItem>
                             )}
                         />
-
-
+                        <FormField control={form.control} name="imageUrl"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Image</FormLabel>
+                                    <RequiredLabelIcon />
+                                    <FormControl>
+                                        <ImageUpload onUpload={field.onChange} value={field.value} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                     </div>
                     <FormField control={form.control} name="description"
                         render={({ field }) => (
@@ -146,8 +146,9 @@ export function ProductForm({ product, courses }: {
                             </FormItem>
                         )}
                     />
+                    <hr className="my-4" />
                     <div className="self-end">
-                        <Button disabled={form.formState.isSubmitting} type="submit">Save</Button>
+                        <Button variant="bordered" radius="sm" disabled={form.formState.isSubmitting} type="submit">Add Product</Button>
                     </div>
                 </form>
             </Form>

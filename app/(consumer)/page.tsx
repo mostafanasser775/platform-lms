@@ -1,3 +1,4 @@
+
 import { PageHeader } from "@/components/PageHeader";
 import { db } from "@/drizzle/db";
 import { ProductTable } from "@/drizzle/schema";
@@ -16,6 +17,8 @@ export default async function Home() {
           ))
         }
       </div>
+      
+      {/* <ImageKitUpload/> */}
 
     </div>
   );

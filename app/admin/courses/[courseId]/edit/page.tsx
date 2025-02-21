@@ -45,27 +45,21 @@ export default async function EditCoursePage({ params }: { params: Promise<{ cou
 
                 </Card>
                 <hr className="my-4" />
-               {course.courseSections.map((section) => (
+                {course.courseSections.map((section) => (
                     <Card key={section.id} className="mt-4">
                         <CardHeader className="flex items-center flex-row justify-between gap-4">
                             <CardTitle className={cn("flex items-center gap-2",
                                 section.status === "private" && "text-muted-foreground")}>
                                 {section.status === "private" && <EyeClosedIcon className="size-4" />} {section.name}
                             </CardTitle>
-                            <LessonFormDialog defaultSectionId={section.id} sections={course.courseSections}>
-                                <DialogTrigger asChild >
-                                    <Button variant="outline">
-                                        <PlusIcon />Add Lesson
-                                    </Button>
-                                </DialogTrigger>
-                            </LessonFormDialog>
+                            <LessonFormDialog defaultSectionId={section.id} sections={course.courseSections} />
                         </CardHeader>
                         <CardContent>
                             <SortableLessonList lessons={section.lessons} sections={course.courseSections} />
                         </CardContent>
 
                     </Card>
-                ))} 
+                ))}
             </TabsContent>
             <TabsContent value="details">
                 <Card>
@@ -98,6 +92,7 @@ async function getCourse(id: string) {
                             status: true,
                             description: true,
                             youtubeVideoId: true,
+                            videoUrl: true,
                             sectionId: true
                         }
 

@@ -1,5 +1,5 @@
 {
-  "id": "f8a4b59f-270a-4115-9ebd-97d9f70e1093",
+  "id": "5dbec9d3-c736-4956-aa42-23e87f7c1fa4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -234,6 +234,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "videoUrl": {
+          "name": "videoUrl",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "' '"
         },
         "order": {
           "name": "order",
@@ -730,8 +737,7 @@
       "schema": "public",
       "values": [
         "public",
-        "private",
-        "draft"
+        "private"
       ]
     },
     "public.user_role": {

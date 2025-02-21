@@ -24,16 +24,12 @@ import { notFound } from "next/navigation"
 import { Fragment, Suspense } from "react"
 import Stripe from "stripe"
 
-export default async function PurchasePage({
-  params,
-}: {
-  params: Promise<{ purchaseId: string }>
-}) {
+export default async function PurchasePage({ params, }: { params: Promise<{ purchaseId: string }> }) {
   const { purchaseId } = await params
 
   return (
     <div className="container max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
-      <Suspense 
+      <Suspense
         fallback={
           <div className="flex items-center justify-center min-h-[60vh]">
             <div className="animate-pulse space-y-4">
@@ -89,11 +85,11 @@ async function SuspenseBoundary({ purchaseId }: { purchaseId: string }) {
                   Transaction ID: {purchaseId}
                 </CardDescription>
               </div>
-              <Badge 
+              <Badge
                 className={cn(
                   "text-base px-4 py-1",
-                  purchase.refundedAt 
-                    ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100" 
+                  purchase.refundedAt
+                    ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
                     : "bg-green-100 text-green-800 hover:bg-green-100"
                 )}
               >
@@ -101,7 +97,7 @@ async function SuspenseBoundary({ purchaseId }: { purchaseId: string }) {
               </Badge>
             </div>
           </CardHeader>
-          
+
           <CardContent className="pb-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-t pt-6">
               <div className="space-y-2">
@@ -124,7 +120,7 @@ async function SuspenseBoundary({ purchaseId }: { purchaseId: string }) {
           </CardContent>
 
           <Separator />
-          
+
           <CardFooter className="pt-6">
             <div className="w-full space-y-4">
               {pricingRows.map(({ label, amountInDollars, isBold }, index) => (
@@ -186,11 +182,11 @@ async function getStripeDetails(
 
   const refundAmount =
     typeof payment_intent !== "string" &&
-    typeof payment_intent?.latest_charge !== "string"
+      typeof payment_intent?.latest_charge !== "string"
       ? payment_intent?.latest_charge?.amount_refunded
       : isRefunded
-      ? pricePaidInCents
-      : undefined
+        ? pricePaidInCents
+        : undefined
 
   return {
     receiptUrl: getReceiptUrl(payment_intent),
@@ -213,19 +209,9 @@ function getReceiptUrl(paymentIntent: Stripe.PaymentIntent | string | null) {
   return paymentIntent?.latest_charge?.receipt_url
 }
 
-function getPricingRows(
-  totalDetails: Stripe.Checkout.Session.TotalDetails | null,
-  {
-    total,
-    subtotal,
-    refund,
-  }: { total: number; subtotal: number; refund?: number }
-) {
-  const pricingRows: {
-    label: string
-    amountInDollars: number
-    isBold?: boolean
-  }[] = []
+function getPricingRows(totalDetails: Stripe.Checkout.Session.TotalDetails | null,
+  { total, subtotal, refund }: { total: number; subtotal: number; refund?: number }) {
+  const pricingRows: { label: string, amountInDollars: number, isBold?: boolean }[] = []
 
   if (totalDetails?.breakdown != null) {
     totalDetails.breakdown.discounts.forEach(discount => {

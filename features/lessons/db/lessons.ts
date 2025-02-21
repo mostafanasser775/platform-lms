@@ -1,6 +1,6 @@
 import { db } from "@/drizzle/db"
-import { CourseSectionTable, LessonTable } from "@/drizzle/schema"
-import { eq } from "drizzle-orm"
+import { CourseSectionTable, LessonTable, UserLessonCompleteTable } from "@/drizzle/schema"
+import { and, eq } from "drizzle-orm"
 
 export async function getNextCourseLessonOrderDB(sectionId: string) {
   const lesson = await db.query.LessonTable.findFirst({
@@ -98,13 +98,10 @@ export async function deleteLessonDB(id: string) {
 }
 
 export async function updateLessonOrdersDB(lessonIds: string[]) {
- await db.transaction(async trx => {
+  await db.transaction(async trx => {
     const lessons = await Promise.all(
       lessonIds.map((id, index) =>
-        db
-          .update(LessonTable)
-          .set({ order: index })
-          .where(eq(LessonTable.id, id))
+        db.update(LessonTable).set({ order: index }).where(eq(LessonTable.id, id))
           .returning({
             sectionId: LessonTable.sectionId,
             id: LessonTable.id,
@@ -124,4 +121,22 @@ export async function updateLessonOrdersDB(lessonIds: string[]) {
     return [lessons, section.courseId]
   })
 
+}
+
+export async function updateLessonCompleteStatusDB({ lessonId, userId, complete }: { lessonId: string, userId: string, complete: boolean }) {
+  let completeLesson: { lessonId: string, userId: string } | undefined;
+  if (complete) {
+    const [lesson] = await db.insert(UserLessonCompleteTable).values({
+      lessonId, userId
+    }).onConflictDoNothing().returning()
+    completeLesson = lesson
+  }
+  else {
+    const [lesson] = await db.delete(UserLessonCompleteTable).
+      where(and(eq(UserLessonCompleteTable.userId, userId), eq(UserLessonCompleteTable.lessonId, lessonId)))
+      .returning()
+    completeLesson = lesson
+
+  }
+  return completeLesson
 }

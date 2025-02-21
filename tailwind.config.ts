@@ -1,12 +1,14 @@
+import {heroui} from '@heroui/theme';
 import type { Config } from "tailwindcss";
 import containerQueries from "@tailwindcss/container-queries";
 export default {
     darkMode: ["class"],
-    content: [
+  content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./features/**/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@heroui/theme/dist/components/(button|card|input|modal|spinner|ripple|form).js"
   ],
   theme: {
   	container: {
@@ -88,9 +90,5 @@ export default {
   		}
   	}
   },
-  plugins: [
-	require("tailwindcss-animate"),
-	containerQueries,
-
-],
+  plugins: [require("tailwindcss-animate"),containerQueries,heroui()],
 } satisfies Config;

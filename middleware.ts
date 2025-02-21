@@ -1,5 +1,4 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
-
 import { NextResponse } from "next/server"
 
 const isPublicRoute = createRouteMatcher([
@@ -13,11 +12,9 @@ const isPublicRoute = createRouteMatcher([
 
 const isAdminRoute = createRouteMatcher(["/admin(.*)"])
 
-
-
 export default clerkMiddleware(async (auth, req) => {
+  
 
- 
   if (isAdminRoute(req)) {
     const user = await auth.protect()
     if (user.sessionClaims.role !== "admin") {
@@ -29,7 +26,7 @@ export default clerkMiddleware(async (auth, req) => {
     await auth.protect()
   }
 
- 
+
 })
 
 export const config = {

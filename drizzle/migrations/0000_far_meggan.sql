@@ -1,6 +1,6 @@
 CREATE TYPE "public"."course_section_status" AS ENUM('public', 'private');--> statement-breakpoint
 CREATE TYPE "public"."lesson_status" AS ENUM('public', 'private', 'preview');--> statement-breakpoint
-CREATE TYPE "public"."product_Status" AS ENUM('public', 'private', 'draft');--> statement-breakpoint
+CREATE TYPE "public"."product_Status" AS ENUM('public', 'private');--> statement-breakpoint
 CREATE TYPE "public"."user_role" AS ENUM('admin', 'user');--> statement-breakpoint
 CREATE TABLE "courses" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
@@ -34,6 +34,7 @@ CREATE TABLE "lessons" (
 	"name" text NOT NULL,
 	"description" text,
 	"youtubeVideoId" text NOT NULL,
+	"videoUrl" text DEFAULT ' ',
 	"order" integer NOT NULL,
 	"status" "lesson_status" DEFAULT 'private' NOT NULL,
 	"sectionId" uuid NOT NULL,
