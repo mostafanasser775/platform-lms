@@ -27,7 +27,7 @@ export default async function CourseLayoutPage({ params, children }: { params: P
 
     </div>;
 }
-export async function SuspenseBoundary({ course }: {
+ async function SuspenseBoundary({ course }: {
     course: {
         id: string,
         name: string,
