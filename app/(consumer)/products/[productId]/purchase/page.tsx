@@ -20,7 +20,7 @@ export default async function PurchasePage({ params, searchParams }:
         <SuspendedCompoenet params={params} searchParams={searchParams} />
     </Suspense>;
 }
-export async function SuspendedCompoenet(
+ async function SuspendedCompoenet(
     { params, searchParams }:
         {
             params: Promise<{ productId: string }>,

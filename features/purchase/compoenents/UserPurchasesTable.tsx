@@ -11,7 +11,7 @@ export default function UserPurchasesTable(
             id: string,
             pricePaidInCents: number,
             productDetails: { name: string, imageUrl: string },
-            refundedAt: Date,
+            refundedAt: Date | null,
             createdAt: Date
         }[]
     }

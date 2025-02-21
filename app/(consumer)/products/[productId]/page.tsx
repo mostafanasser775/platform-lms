@@ -132,7 +132,7 @@ async function PurchesButton({ productId }: { productId: string }) {
         </Button>
     )
 }
-export async function getPublicProduct(id: string) {
+ async function getPublicProduct(id: string) {
 
     const product = await db.query.ProductTable.findFirst({
         columns: {

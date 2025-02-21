@@ -16,16 +16,15 @@ export default function PurchasesPage() {
         </div>
     );
 }
-export async function SuspenseBoundary() {
+ async function SuspenseBoundary() {
     const { userId, redirectToSignIn } = await getCurrentUser();
     if (!userId) return redirectToSignIn();
     const Purchases = await getPurchases(userId);
     if (Purchases.length === 0) return <p className="text-center">No Purchases Found</p>
-    else
-        return <UserPurchasesTable Purchases={Purchases} />
+    else return <UserPurchasesTable Purchases={Purchases} />
 
 }
-export async function getPurchases(userId: string) {
+ async function getPurchases(userId: string) {
     return await db.query.PurchaseTable.findMany({
         columns: {
             id: true,
