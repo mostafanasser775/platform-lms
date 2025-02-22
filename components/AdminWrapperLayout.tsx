@@ -14,10 +14,18 @@ export function AdminWrapperLayout({ children }: { children: ReactNode }) {
 
             {/* Main Content Area */}
 
-            <div className="w-full h-full min-h-screen overflow-auto">
+            <div className="w-full h-full min-h-screen overflow-auto bg-gray-50 ">
                 <Toaster />
+
                 <NavBar />
-                {children}</div>
+                <div className="mt-2 p-4">
+                    <div className="rounded-medium p-4 bg-white shadow border">
+                        {children}
+
+                    </div>
+
+                </div>
+            </div>
         </div>
     );
 }
@@ -52,7 +60,7 @@ function Sidebar() {
 
     return (
         <aside className={cn(
-            "bg-gray-100 min-h-screen  flex flex-col transition-all duration-300 border-r overflow-auto",
+            "bgwhite min-h-screen  flex flex-col transition-all duration-300 border-r overflow-auto",
             isOpen ? "w-72" : "w-20"
         )}>
             {/* Sidebar Header */}
@@ -65,9 +73,9 @@ function Sidebar() {
 
             {/* Sidebar Menu */}
             <SignedIn>
-                <nav className="flex flex-col gap-3 mt-4 p-4">
+                <nav className="flex flex-col gap-3 mt-4">
                     {menuItems.map(({ name, href, icon: Icon }) => (
-                        <Link key={href} href={href} className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-300 transition-all">
+                        <Link key={href} href={href} className="flex items-center gap-4 p-3  hover:bg-gray-300 transition-all">
                             <Icon size={24} />
                             <span className={cn("transition-all", isOpen ? "block" : "hidden")}>{name}</span>
                         </Link>

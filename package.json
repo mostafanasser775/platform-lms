@@ -25,6 +25,7 @@
     "@heroui/select": "^2.4.13",
     "@heroui/spinner": "^2.2.10",
     "@heroui/system": "^2.4.10",
+    "@heroui/table": "^2.2.12",
     "@heroui/theme": "^2.4.9",
     "@heroui/toast": "^2.0.3",
     "@hookform/resolvers": "^3.10.0",

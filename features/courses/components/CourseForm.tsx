@@ -4,16 +4,18 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { couseSchema } from '@/features/courses/schema/courseSchema'
 import { z } from "zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { RequiredLabelIcon } from "@/components/RequiredLabelIcon";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { createCourse, updateCourse } from "../actions/courses";
 import { actionToast } from "@/components/ui/toast";
-import { useRouter } from "next/navigation";
+//import { useRouter } from "next/navigation";
+import { Input } from "@heroui/input";
+import { Textarea } from "@heroui/input";
+import { Button } from "@heroui/button";
+import { useTransition } from "react";
+
 export function CourseForm({ course }: { course?: { id: string, name: string, description: string } }) {
-    const router = useRouter()
+   // const router = useRouter()
+    const [isPending, startTransition] = useTransition();
     const form = useForm<z.infer<typeof couseSchema>>({
         resolver: zodResolver(couseSchema),
         defaultValues: course ?? {
@@ -23,10 +25,14 @@ export function CourseForm({ course }: { course?: { id: string, name: string, de
     })
     async function onSubmit(values: z.infer<typeof couseSchema>) {
         const action = course == null ? createCourse : updateCourse.bind(null, course.id, values)
-        const result = await action(values)
-        if (result.error === false)
-            router.refresh()
-        actionToast({ toastData: result });
+
+        startTransition(async () => {
+            const result = await action(values)
+            //  if (result.error === false)
+            //     router.refresh()
+            actionToast({ toastData: result });
+        });
+
     }
     return (
         <div>
@@ -35,9 +41,10 @@ export function CourseForm({ course }: { course?: { id: string, name: string, de
                     <FormField control={form.control} name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Name</FormLabel>
-                                <RequiredLabelIcon />
-                                <FormControl><Input {...field} className="border-gray-300 rounded-md" /></FormControl>
+                                <FormControl>
+                                    <Input isRequired variant='bordered' label='Course Name' 
+                                    placeholder="Enter Course Name" labelPlacement='outside' radius="sm" {...field} />
+                                </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -45,15 +52,20 @@ export function CourseForm({ course }: { course?: { id: string, name: string, de
                     <FormField control={form.control} name="description"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Description</FormLabel>
-                                <RequiredLabelIcon />
-                                <FormControl><Textarea className="min-h-20 resize-none border-gray-300 rounded-md" {...field} /></FormControl>
+                                <FormControl><Textarea
+                                    variant="bordered" isRequired label='Description' 
+                                     labelPlacement="outside" placeholder="Enter Course Description"
+
+                                    {...field} />
+                                    
+                                    </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
+                    <hr />
                     <div className="self-end">
-                        <Button disabled={form.formState.isSubmitting} type="submit">Save</Button>
+                        <Button disabled={form.formState.isSubmitting} type="submit" isLoading={isPending}>Save</Button>
                     </div>
                 </form>
             </Form>

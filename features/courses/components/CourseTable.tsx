@@ -1,73 +1,52 @@
 'use client'
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
 import { formatPlural } from "@/lib/formatters";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { Trash2Icon } from "lucide-react";
 import { ActionButton } from "@/components/ActionButton";
 import { deleteCourse } from "../actions/courses";
+import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@heroui/table";
+import { TransationLinkBtn } from "@/components/TransationLinkBtn";
+
 export function CourseTable({ courses }: {
-    courses: {
-        id: string,
-        name: string,
-        sectionsCount: number,
-        lessonsCount: number
-        studentsCount: number
-    }[]
+    courses: { id: string, name: string, sectionsCount: number, lessonsCount: number, studentsCount: number }[]
 }) {
+    if (!courses || courses.length === 0) {
+        return <div className="p-6 text-center text-gray-500">No courses available</div>;
+    }
+
     return (
-        <div className="container ">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>
-                            {formatPlural(courses.length, {
-                                singular: "course",
-                                plural: "courses",
-                            })}
-                        </TableHead>
-                        <TableHead>Students</TableHead>
-                        <TableHead>Actions</TableHead>
-                    </TableRow>
+        <div className="border rounded-medium">
+            <Table aria-label="Example static collection table" removeWrapper selectionMode="single">
+
+                <TableHeader className="">
+                    <TableColumn className="px-6 py-4 text-lg font-semibold">{formatPlural(courses.length, {
+                        singular: "Course",
+                        plural: "Courses",
+                    })}</TableColumn>
+                    <TableColumn className="px-6 py-4">Students</TableColumn>
+                    <TableColumn className="px-6 py-4 text-right">Actions</TableColumn>
                 </TableHeader>
                 <TableBody>
-                    {courses && courses.map((course) => (
-                        <TableRow key={course.id}>
-                            <TableCell className="flex flex-col gap-1">
-                                <div className="font-semibold ">
-                                    {course.name}
+                    {courses.map((course) => (
+                        <TableRow key={course.id} >
+                            <TableCell className="px-6">
+                                <div className="font-semibold text-gray-900">{course.name}</div>
+                                <div className="text-sm text-gray-500">
+                                    {formatPlural(course.sectionsCount, { singular: 'section', plural: 'sections' })} • {formatPlural(course.lessonsCount, { singular: 'lesson', plural: 'lessons' })}
                                 </div>
-                                <div className="text-muted-foreground">
-                                    {formatPlural(course.sectionsCount, { singular: 'section', plural: 'sections' })}{" "} . {" "}
-                                    {formatPlural(course.lessonsCount, { singular: 'lesson', plural: 'lessons' })}
-                                </div>
-
-
                             </TableCell>
-                            <TableCell>{formatPlural(course.studentsCount, { singular: 'student', plural: 'students' })}</TableCell>
-                            <TableCell>
-                                <div className="flex gap-2">
-                                    <Button asChild ><Link href={`/admin/courses/${course.id}/edit`}>Edit</Link></Button>
-                                    <ActionButton variant={'destructive'} requireAreYouSure
-                                        action={deleteCourse.bind(null, course.id)}>
-                                        <Trash2Icon />
-                                        <span className="sr-only">Delete</span>
+                            <TableCell className="px-6">{formatPlural(course.studentsCount, { singular: 'student', plural: 'students' })}</TableCell>
+                            <TableCell className="px-6 text-right">
+                                <div className="flex items-center gap-3 justify-end">
+                                    <TransationLinkBtn title="Edit" color="default"  variant="solid" link={`/admin/courses/${course.id}/edit`}/>
+                                    <ActionButton variant="destructive" size="sm" requireAreYouSure action={deleteCourse.bind(null, course.id)}>
+                                        <Trash2Icon className="w-4 h-4" />
                                     </ActionButton>
                                 </div>
                             </TableCell>
                         </TableRow>
-                    ))
-                    }
+                    ))}
                 </TableBody>
-
             </Table>
         </div>
-    )
+    );
 }

@@ -8,7 +8,7 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./features/**/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@heroui/theme/dist/components/(button|card|chip|input|modal|select|spinner|toast|ripple|form|listbox|divider|popover|scroll-shadow).js"
+    "./node_modules/@heroui/theme/dist/components/(button|card|chip|input|modal|select|spinner|table|toast|ripple|form|listbox|divider|popover|scroll-shadow|checkbox|spacer).js"
   ],
   theme: {
   	container: {
