@@ -195,13 +195,3 @@ async function ToLessonButton({
         </Button>
     )
 }
-export function NonViewSkelton() {
-    return (
-        <div className="bg-gray-200">
-            <span>
-                this
-            </span>
-
-        </div>
-    )
-}
