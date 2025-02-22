@@ -167,24 +167,10 @@ async function getNextLesson(lesson: {
 
     return nextLesson
 }
-async function ToLessonButton({
-    children,
-    courseId,
-    lessonFunc,
-    lesson,
-}: {
-    children: ReactNode
-    courseId: string
-    lesson: {
-        id: string
-        sectionId: string
-        order: number
-    }
-    lessonFunc: (lesson: {
-        id: string
-        sectionId: string
-        order: number
-    }) => Promise<{ id: string } | undefined>
+async function ToLessonButton({ children, courseId, lessonFunc, lesson, }: {
+    children: ReactNode, courseId: string,
+    lesson: { id: string, sectionId: string, order: number }
+    lessonFunc: (lesson: { id: string, sectionId: string, order: number }) => Promise<{ id: string } | undefined>
 }) {
     const toLesson = await lessonFunc(lesson)
     if (toLesson == null) return null
