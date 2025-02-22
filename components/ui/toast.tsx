@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { toast } from "@/hooks/use-toast"
+import { addToast } from "@heroui/toast"
 
 const ToastProvider = ToastPrimitives.Provider
 
@@ -130,13 +130,14 @@ export {
   actionToast
 
 }
- function actionToast({ toastData }: { toastData: { error: boolean, message: string; } }) {
+function actionToast({ toastData }: { toastData: { error: boolean, message: string; } }) {
   console.log(toastData)
+ 
   return (
-    toast({
+    addToast({
       title: toastData.error ? "Error" : "Success",
-      variant: toastData.error ? "destructive" : "default",
-      description:toastData.message
+      description: toastData.message,
+      color: toastData.error ? 'danger' : 'success',
     })
   )
 

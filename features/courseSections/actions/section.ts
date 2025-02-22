@@ -44,6 +44,6 @@ export async function deleteSectionAction(id: string) {
         return { error: true, message: "Failed to Delete Your Section" }
     }
     await deleteCourseSectionDB(id)
-    return { error: true, message: 'Successfully deleted section' }
+    return { error: false, message: 'Successfully deleted section' }
 
 }

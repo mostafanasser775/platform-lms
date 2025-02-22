@@ -3,22 +3,23 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from "zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { RequiredLabelIcon } from "@/components/RequiredLabelIcon";
-import { Input } from "@/components/ui/input";
-
-import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { actionToast } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
 import { CourseSectionStatus, CourseSectionStatuses } from "@/drizzle/schema";
 import { sectionSchema } from "../schema/sectionSchema";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { createSectionAction, updateSectionAction } from "../actions/section";
+import { Input } from "@heroui/input";
+import { Button } from "@heroui/button";
+import { useTransition } from "react";
+import { Select, SelectItem } from "@heroui/select";
 export function SectionForm({ section, courseId, onSuccess }:
     {
         section?: { id: string, name: string, status: CourseSectionStatus },
         courseId: string, onSuccess?: () => void
     }) {
+    const [isPending, startTransition] = useTransition();
+
     const router = useRouter()
     const form = useForm<z.infer<typeof sectionSchema>>({
         resolver: zodResolver(sectionSchema),
@@ -29,11 +30,15 @@ export function SectionForm({ section, courseId, onSuccess }:
     })
     async function onSubmit(values: z.infer<typeof sectionSchema>) {
         const action = section == null ? createSectionAction.bind(null, courseId) : updateSectionAction.bind(null, section.id, values)
-        const result = await action(values)
-        if (result)
-            router.refresh()
-        actionToast({ toastData: result });
-        if (!result.error) onSuccess?.()
+        startTransition(async () => {
+            const result = await action(values)
+            if (result.error === false)
+                router.refresh()
+            actionToast({ toastData: result });
+            if (!result.error) onSuccess?.()
+
+        });
+
     }
     return (
         <div>
@@ -43,39 +48,42 @@ export function SectionForm({ section, courseId, onSuccess }:
                         <FormField control={form.control} name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Name</FormLabel>
-                                    <RequiredLabelIcon />
-                                    <FormControl><Input {...field} /></FormControl>
+
+                                    <FormControl>
+                                        <Input {...field} variant='bordered' radius="sm" label='Name'
+                                            placeholder="Enter Name"
+                                            isRequired labelPlacement="outside"
+                                        />
+                                    </FormControl>
                                     <FormMessage />
 
                                 </FormItem>
                             )}
                         />
-
+                
                         <FormField control={form.control} name="status"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Status</FormLabel>
-                                    <RequiredLabelIcon />
-                                    <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>{
-                                            CourseSectionStatuses.map((status) =>
-                                                <SelectItem key={status} value={status}>{status}</SelectItem>
-                                            )}
-                                        </SelectContent>
+                                    <Select isRequired variant="bordered" radius="sm" label="Status" labelPlacement="outside"
+                                        placeholder="Select an status"
+                                        onChange={(e) => field.onChange(e.target.value)}
+                                        selectedKeys={[field.value]}
+                                    >
+                                        {CourseSectionStatuses.map((status) =>
+                                            <SelectItem key={status} textValue={status}>
+                                                {status}
+                                            </SelectItem>
+                                        )}
                                     </Select>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                     </div>
+                    <hr className="my-4" />
                     <div className="self-end">
-                        <Button disabled={form.formState.isSubmitting} type="submit">Save</Button>
+                        <Button isLoading={isPending}
+                            type="submit" radius="sm" variant="solid" color="default">Save</Button>
                     </div>
                 </form>
             </Form>

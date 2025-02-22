@@ -2,10 +2,10 @@
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { ReactNode, Suspense, useState } from "react";
-import { Toaster } from "@/components/ui/toaster";
 import { BookOpen, LayoutDashboard, Menu, Package, ShoppingBag, X, Settings, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
+import { ToastProvider } from "@heroui/toast";
 export function AdminWrapperLayout({ children }: { children: ReactNode }) {
     return (
         <div className="flex">
@@ -15,7 +15,7 @@ export function AdminWrapperLayout({ children }: { children: ReactNode }) {
             {/* Main Content Area */}
 
             <div className="w-full h-full min-h-screen overflow-auto bg-gray-50 ">
-                <Toaster />
+                <ToastProvider  placement="top-right"/>
 
                 <NavBar />
                 <div className="mt-2 p-4">

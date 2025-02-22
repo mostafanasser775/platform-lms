@@ -4,8 +4,8 @@ import { useState } from "react";
 import { LessonForm } from "./LessonForm";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@heroui/modal";
 import { Button } from "@heroui/button";
-import { PlusCircleIcon } from "lucide-react";
-export function LessonFormDialog({ sections, lesson, defaultSectionId }: {
+import { EditIcon, PlusCircleIcon } from "lucide-react";
+export function LessonModal({ sections, lesson, defaultSectionId }: {
     sections: { id: string, name: string }[],
     defaultSectionId?: string,
     lesson?: { id: string, name: string, status: LessonStatus, youtubeVideoId: string, videoUrl: string, description: string | null, sectionId: string }
@@ -15,8 +15,8 @@ export function LessonFormDialog({ sections, lesson, defaultSectionId }: {
     return (<>
         <>
             <Button variant="bordered" className="ml-auto"
-                onPress={() => setIsOpen(!isOpen)} startContent={<PlusCircleIcon size={24} />}>
-                {!lesson ? "Add Lesson" : `Edit`}
+                onPress={() => setIsOpen(!isOpen)} startContent={!lesson ? <PlusCircleIcon size={20} /> : <EditIcon size={20} />}>
+                {!lesson ? "Add Lesson" : `Edit Lesson`}
             </Button>
             <Modal isOpen={isOpen} onOpenChange={setIsOpen} size="xl" >
                 <ModalContent>

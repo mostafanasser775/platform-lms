@@ -4,24 +4,11 @@ import { ComponentPropsWithRef, ReactNode, useTransition } from "react"
 import { Button } from "./ui/button"
 import { Loader2Icon } from "lucide-react"
 import { cn } from "@/lib/utils"
-import {
-    AlertDialog,
-    AlertDialogDescription,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogContent,
-    AlertDialogTrigger,
-    AlertDialogFooter,
-    AlertDialogCancel,
-    AlertDialogAction,
-} from "./ui/alert-dialog"
+import {AlertDialog,AlertDialogDescription,AlertDialogHeader,AlertDialogTitle,AlertDialogContent,AlertDialogTrigger,AlertDialogFooter,AlertDialogCancel,AlertDialogAction} from "./ui/alert-dialog"
 import { useRouter } from "next/navigation"
 import { actionToast } from "./ui/toast"
 
-export function ActionButton({
-    action,
-    requireAreYouSure = false,
-    ...props
+export function ActionButton({ action, requireAreYouSure = false, ...props
 }: Omit<ComponentPropsWithRef<typeof Button>, "onClick"> & {
     action: () => Promise<{ error: boolean; message: string }>
     requireAreYouSure?: boolean,
@@ -72,13 +59,7 @@ export function ActionButton({
     }
 }
 
-function LoadingTextSwap({
-    isLoading,
-    children,
-}: {
-    isLoading: boolean
-    children: ReactNode
-}) {
+function LoadingTextSwap({ isLoading, children }: { isLoading: boolean, children: ReactNode }) {
     return (
         <div className="grid items-center justify-items-center">
             <div

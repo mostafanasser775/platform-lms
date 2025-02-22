@@ -2,11 +2,11 @@
 import { LessonStatus } from "@/drizzle/schema"
 import { cn } from "@/lib/utils"
 import { EyeClosed, Trash2Icon, VideoIcon } from "lucide-react"
-import { LessonFormDialog } from "./LessonFormDialog"
 import { ActionButton } from "@/components/ActionButton"
 import { SortableItem, SortableList } from "@/components/SortableList"
 import { deleteLessonAction, updateLessonOrdersAction } from "../actions/lesson"
 import { useEffect, useState } from "react"
+import { LessonModal } from "./LessonModal"
 
 export function SortableLessonList({ sections, lessons }: {
   sections: { id: string, name: string }[]
@@ -39,7 +39,7 @@ export function SortableLessonList({ sections, lessons }: {
               {lesson.status === "preview" && <VideoIcon className="size-4" />}
               {lesson.name}
             </div>
-            <LessonFormDialog lesson={lesson} sections={sections} defaultSectionId={""} />
+            <LessonModal lesson={lesson} sections={sections} defaultSectionId={""} />
 
             <ActionButton
               action={deleteLessonAction.bind(null, lesson.id)}

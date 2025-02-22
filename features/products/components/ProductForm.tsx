@@ -17,8 +17,7 @@ import ImageUpload from "@/components/ImageUpload";
 import { Select, SelectedItems, SelectItem } from "@heroui/select";
 import { Chip } from "@heroui/chip";
 export function ProductForm({ product, courses }: {
-    product?: {
-        id: string,
+    product?: { id: string,
         name: string,
         description: string,
         imageUrl: string,
@@ -104,16 +103,16 @@ export function ProductForm({ product, courses }: {
                                     <Select isRequired variant="bordered" radius="sm"
                                         label="Included Courses" labelPlacement="outside"
                                         placeholder="Select Courses"
-                                        onChange={(e)=>{
-                                            new Set(e.target.value.split(",")).forEach((courseId)=>{
+                                        onChange={(e) => {
+                                            new Set(e.target.value.split(",")).forEach((courseId) => {
                                                 field.onChange([...field.value, courseId])
                                             })
                                         }
-                                            
+
 
                                         }
                                         // onSelectionChange={field.onChange}
-                                         selectedKeys={[...field.value]}
+                                        selectedKeys={[...field.value]}
                                         selectionMode="multiple"
                                         renderValue={(items: SelectedItems<string[]>) => {
                                             return (
@@ -135,7 +134,7 @@ export function ProductForm({ product, courses }: {
                                 </FormItem>
                             )}
                         />
-                     
+
                         <FormField control={form.control} name="imageUrl"
                             render={({ field }) => (
                                 <FormItem>
