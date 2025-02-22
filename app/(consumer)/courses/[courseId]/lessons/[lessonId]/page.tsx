@@ -7,7 +7,7 @@ import { canViewLesson } from "@/features/lessons/permissions/lessons";
 import { getCurrentUser } from "@/services/clerk";
 import { Button } from "@heroui/button";
 import { and, asc, desc, eq, gt, lt, or } from "drizzle-orm";
-import { CheckSquare2Icon, XSquareIcon } from "lucide-react";
+import { CheckSquare2Icon, LockIcon, XSquareIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ReactNode, Suspense } from "react";
@@ -35,8 +35,6 @@ async function SuspenseBoundary({ lesson, courseId }: {
 
     const canView = await canViewLesson({ role, userId }, lesson)
 
-    if (!canView) return notFound()
-    console.log(lesson)
     return (
         <div className="my-4 flex flex-col gap-4">
             <div className="aspect-video">
@@ -46,34 +44,38 @@ async function SuspenseBoundary({ lesson, courseId }: {
                         <VideoPlayer videoUrl={'https://www.youtube.com/watch?v=LXb3EKWsInQ'} lessonId={lesson.id} />
                     </div>
                 ) : (
-                    <div className="flex justify-center">
-
+                    <div className="flex items-center justify-center bg-primary text-primary-foreground h-full w-full">
+                        <LockIcon className="size-16" />
                     </div>
                 )}
             </div>
             <div className="flex flex-col gap-2">
                 <h1 className="text-2xl font-semibold">{lesson.name}</h1>
-                <div className="flex justify-between">
-                    <Suspense fallback={<Button isLoading />}>
-                        <ToLessonButton lesson={lesson} courseId={courseId} lessonFunc={getPreviousLesson}>
-                            Previous
-                        </ToLessonButton>
-                    </Suspense>
-                    <ActionButton action={updateLessonCompleteStatus.bind(null, lesson.id, !isLessonComplete)}>
-                        {isLessonComplete ? (
-                            <div className="flex items-center">
-                                <CheckSquare2Icon /><span className="ml-2">Mark Incomplete</span>
-                            </div>
-                        ) : (
-                            <div className="flex"><XSquareIcon /> <span className="ml-2">Mark Complete</span></div>
-                        )}
-                    </ActionButton>
-                    <Suspense fallback={<Button isLoading />}>
-                        <ToLessonButton lesson={lesson} courseId={courseId} lessonFunc={getNextLesson}>
-                            Next
-                        </ToLessonButton>
-                    </Suspense>
-                </div>
+                {canView &&
+                    <div className="flex justify-between">
+                        <Suspense fallback={<Button isLoading />}>
+                            <ToLessonButton lesson={lesson} courseId={courseId} lessonFunc={getPreviousLesson}>
+                                Previous
+                            </ToLessonButton>
+                        </Suspense>
+                        <ActionButton action={updateLessonCompleteStatus.bind(null, lesson.id, !isLessonComplete)}>
+                            {isLessonComplete ? (
+                                <div className="flex items-center">
+                                    <CheckSquare2Icon /><span className="ml-2">Mark Incomplete</span>
+                                </div>
+                            ) : (
+                                <div className="flex"><XSquareIcon /> <span className="ml-2">Mark Complete</span></div>
+                            )}
+                        </ActionButton>
+                        <Suspense fallback={<Button isLoading />}>
+                            <ToLessonButton lesson={lesson} courseId={courseId} lessonFunc={getNextLesson}>
+                                Next
+                            </ToLessonButton>
+                        </Suspense>
+                    </div>
+
+                }
+
             </div>
             {lesson.description && <p>{lesson.description}</p>
             }
@@ -191,5 +193,15 @@ async function ToLessonButton({
         <Button variant="bordered" as={Link} href={`/courses/${courseId}/lessons/${toLesson.id}`}>
             {children}
         </Button>
+    )
+}
+export function NonViewSkelton() {
+    return (
+        <div className="bg-gray-200">
+            <span>
+                this
+            </span>
+
+        </div>
     )
 }

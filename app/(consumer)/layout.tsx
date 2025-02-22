@@ -20,11 +20,11 @@ export default async function ConsumerLayout({ children }: { children: React.Rea
 function NavBar() {
     return <header className="flex shadow-md h-12  bg-background z-10">
         <nav className="flex gap-4 container ">
-            <Link className="mr-auto text-lg hover:underline px-2 flex items-center" href="/admin">LMS</Link>
+            <Link className="mr-auto text-lg hover:underline px-2 flex items-center" href="/">LMS</Link>
             <Suspense fallback={<div>...</div>}>
                 <SignedIn>
                     <AdminLink />
-                    <Link className=" hover:bg-red-200 px-2 flex items-center" href={'/courses'}>My Courses</Link>
+                    <Link className=" hover:bg-red-200 px-2 flex items-center" href={'/courses'}>Courses</Link>
                     <Link className="hover:bg-red-200  px-2 flex items-center" href={'/purchases'}>Purchase History</Link>
                     <div className="size-8 self-center">
                         <UserButton appearance={{

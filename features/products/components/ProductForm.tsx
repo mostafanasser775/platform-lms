@@ -12,10 +12,10 @@ import { useRouter } from "next/navigation";
 import { productSchema } from "../schema/products";
 import { ProdcutStatus, productStatuses } from "@/drizzle/schema/product";
 import { createProductAction, updateProductAction } from "../actions/product";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MultiSelect } from "@/components/ui/custom/multi-select";
 import { Button } from "@heroui/button";
 import ImageUpload from "@/components/ImageUpload";
+import { Select, SelectedItems, SelectItem } from "@heroui/select";
+import { Chip } from "@heroui/chip";
 export function ProductForm({ product, courses }: {
     product?: {
         id: string,
@@ -80,47 +80,62 @@ export function ProductForm({ product, courses }: {
                                 </FormItem>
                             )}
                         />
-
                         <FormField control={form.control} name="status"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Status</FormLabel>
-                                    <RequiredLabelIcon />
-                                    <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
-                                        <FormControl>
-                                            <SelectTrigger className="border-gray-300 rounded-md">
-                                                <SelectValue />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent> {
-                                            productStatuses.map((status) =>
-                                                <SelectItem key={status} value={status}>{status}</SelectItem>
-                                            )}
-                                        </SelectContent>
+                                    <Select isRequired variant="bordered" radius="sm" label="Status" labelPlacement="outside"
+                                        placeholder="Select an status"
+                                        onChange={(e) => field.onChange(e.target.value)}
+                                        selectedKeys={[field.value]}
+                                    >
+                                        {productStatuses.map((status) =>
+                                            <SelectItem key={status}>
+                                                {status}
+                                            </SelectItem>
+                                        )}
                                     </Select>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-
                         <FormField control={form.control} name="courseIds"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Included Courses</FormLabel>
-                                    <RequiredLabelIcon />
-                                    <FormControl>
-                                        <MultiSelect selectPlaceholder='Select Courses'
-                                            searchPlaceholder="Select Courses"
-                                            options={courses}
-                                            getLabel={(c) => c.name} getValue={(c) => c.id}
-                                            selectedValues={field.value}
-                                            onSelectedValuesChange={field.onChange}
-                                        />
-                                    </FormControl>
+                                    <Select isRequired variant="bordered" radius="sm"
+                                        label="Included Courses" labelPlacement="outside"
+                                        placeholder="Select Courses"
+                                        onChange={(e)=>{
+                                            new Set(e.target.value.split(",")).forEach((courseId)=>{
+                                                field.onChange([...field.value, courseId])
+                                            })
+                                        }
+                                            
+
+                                        }
+                                        // onSelectionChange={field.onChange}
+                                         selectedKeys={[...field.value]}
+                                        selectionMode="multiple"
+                                        renderValue={(items: SelectedItems<string[]>) => {
+                                            return (
+                                                <div className="flex flex-wrap gap-2">
+                                                    {items.map((item) => (
+                                                        <Chip key={item.key} radius="sm">
+                                                            {item?.textValue}</Chip>
+                                                    ))}
+                                                </div>
+                                            );
+                                        }}>
+                                        {courses.map((course) =>
+                                            <SelectItem key={course.id} textValue={course.name}>
+                                                {course.name}
+                                            </SelectItem>
+                                        )}
+                                    </Select>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+                     
                         <FormField control={form.control} name="imageUrl"
                             render={({ field }) => (
                                 <FormItem>
@@ -148,7 +163,7 @@ export function ProductForm({ product, courses }: {
                     />
                     <hr className="my-4" />
                     <div className="self-end">
-                        <Button variant="bordered" radius="sm" disabled={form.formState.isSubmitting} type="submit">Add Product</Button>
+                        <Button variant="bordered" radius="sm" disabled={form.formState.isSubmitting} type="submit">{product == null ? "Create" : "Update"} Product</Button>
                     </div>
                 </form>
             </Form>
