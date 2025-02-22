@@ -24,14 +24,9 @@ export function canDeleteLessons({ role }: { role: UserRole | undefined }) {
 }
 
 
-export async function canViewLesson(
-  {
-    role,
-    userId,
-  }: {
-    userId: string | undefined
-    role: UserRole | undefined
-  },
+export async function canViewLesson({ role, userId, }: {
+  userId: string | undefined, role: UserRole | undefined
+},
   lesson: { id: string; status: LessonStatus }
 ) {
   if (role === "admin" || lesson.status === "preview") return true
@@ -44,10 +39,8 @@ export async function canViewLesson(
     .leftJoin(CourseTable, eq(CourseTable.id, UserCourseAccessTable.courseId))
     .leftJoin(
       CourseSectionTable,
-      and(
-        eq(CourseSectionTable.courseId, CourseTable.id),
-        eq(CourseSectionTable.status,"public")
-        
+      and(eq(CourseSectionTable.courseId, CourseTable.id), eq(CourseSectionTable.status, "public")
+
       )
     )
     .leftJoin(
