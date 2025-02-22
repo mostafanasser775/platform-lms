@@ -10,19 +10,13 @@ export default async function SalesPurcahsePage() {
         <div className="container my-4">
             <PageHeader title="Sales" />
             <PurchasesSalesTable Purchases={purchases} />
-            
+
         </div>
     )
 }
 async function getPurchases() {
     return db.query.PurchaseTable.findMany({
-        columns: {
-            id: true,
-            pricePaidInCents: true,
-            refundedAt: true,
-            productDetails: true,
-            createdAt: true
-        },
+        columns: { id: true, pricePaidInCents: true, refundedAt: true, productDetails: true, createdAt: true },
         orderBy: desc(PurchaseTable.createdAt),
         with: {
             user: {

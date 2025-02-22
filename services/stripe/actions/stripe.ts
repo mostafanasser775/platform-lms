@@ -22,7 +22,7 @@ export async function getClientSessionSecret(
           currency: "usd",
           product_data: {
             name: product.name,
-            images: ["https://upload.wikimedia.org/wikipedia/commons/a/a9/Example.jpg"],
+            images: [product.imageUrl],
             description: product.description,
           },
           unit_amount: product.priceInDollars * 100,
