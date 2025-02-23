@@ -9,7 +9,7 @@ import { redirect } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 
-export default async function GET(req: NextRequest) {
+export  async function GET(req: NextRequest) {
 
     const stripeSessionId = await req.nextUrl.searchParams.get("stripeSessionId")
 
