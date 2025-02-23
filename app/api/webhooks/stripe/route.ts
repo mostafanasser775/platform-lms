@@ -11,7 +11,7 @@ import Stripe from "stripe"
 
 export  async function GET(req: NextRequest) {
 
-    const stripeSessionId = await req.nextUrl.searchParams.get("stripeSessionId")
+    const stripeSessionId =  req.nextUrl.searchParams.get("stripeSessionId")
 
     if (stripeSessionId == null) {
         redirect("/products/purchase-failure")
@@ -53,6 +53,9 @@ export async function POST(req: NextRequest) {
 async function processStripeCheckoutSession(checkOutSession: Stripe.Checkout.Session) {
     const userId = checkOutSession.metadata?.userId
     const productId = checkOutSession.metadata?.productId
+    console.log("it reaches here")
+    console.log("userId",userId )
+    console.log("productId",productId )
     if (userId == null || productId == null) {
         throw new Error("userId or productId not found in checkout session")
     }
