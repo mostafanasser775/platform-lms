@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import React, { useState, useEffect, useTransition } from 'react';
 import { ArrowUpRight, Users, Package, BookOpen, Folders, FileText, DollarSign, RefreshCw, ShoppingCart, UserCheck, TrendingUp, Clock, Filter, Download, Search } from 'lucide-react';

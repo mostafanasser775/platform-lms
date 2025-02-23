@@ -32,7 +32,7 @@ export function CoursePageClient({
             : course.courseSections[0]
 
     return (
-        <Accordion
+        <Accordion 
             type="multiple"
             defaultValue={defaultValue ? [defaultValue.id] : undefined}
         >

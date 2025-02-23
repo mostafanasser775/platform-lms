@@ -39,7 +39,7 @@ async function SuspenseBoundary({ lesson, courseId }: {
 
                 {canView ? (
                     <div>
-                        <VideoPlayer videoUrl={'https://www.youtube.com/watch?v=LXb3EKWsInQ'} lessonId={lesson.id} />
+                        <VideoPlayer videoUrl={lesson.videoUrl} lessonId={lesson.id} />
                     </div>
                 ) : (
                     <div className="flex items-center justify-center bg-primary text-primary-foreground h-full w-full">

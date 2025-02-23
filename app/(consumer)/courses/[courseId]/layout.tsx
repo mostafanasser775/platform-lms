@@ -5,23 +5,31 @@ import { asc, eq, or } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { CoursePageClient } from "./_client";
+import { Divider } from "@heroui/react";
 
 export default async function CourseLayoutPage({ params, children }: { params: Promise<{ courseId: string }>, children: React.ReactNode }) {
     const { courseId } = await params
     const course = await GetCourse(courseId)
     if (!course) return notFound()
 
-    return <div className="grid grid-cols-[300px,1fr] gap-8 container">
-        <div className="py-4">
+    return <div className="grid grid-cols-[500px,1fr] gap-8 container my-4">
+        <div className=" my-8 p-4">
             <div className="font-semibold text-lg">{course.name}</div>
             <div>
                 <Suspense fallback={<div>...loading</div>}>
-                    <SuspenseBoundary course={course} />
+                    <div className="">
+                        <SuspenseBoundary course={course} />
+
+                    </div>
                 </Suspense>
             </div>
         </div>
+        <div className="flex">
+            <div>
+            <Divider orientation="vertical" className="my-8"/>
 
-        <div className="py-4">
+            </div>
+
             {children}
         </div>
 
