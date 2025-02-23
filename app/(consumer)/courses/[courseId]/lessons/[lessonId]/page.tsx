@@ -52,7 +52,7 @@ async function SuspenseBoundary({ lesson, courseId }: {
                 <div className="flex justify-between">
                     <h1 className="text-2xl font-semibold">{lesson.name}</h1>
                     {canView &&
-                        <div className="flex justify-between">
+                        <div className="flex justify-between gap-2">
                             <Suspense fallback={<Button isLoading />}>
                                 <ToLessonButton lesson={lesson} courseId={courseId} lessonFunc={getPreviousLesson}>
                                     Previous

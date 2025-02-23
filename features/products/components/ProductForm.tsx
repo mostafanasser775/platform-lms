@@ -76,7 +76,7 @@ export function ProductForm({ product, courses }: {
                                 <FormItem>
                                     <FormControl>
                                         <NumberInput startContent="$" {...field} variant="bordered" radius="sm" label="Price" labelPlacement="outside"
-                                            onValueChange={(value) => field.onChange(parseFloat(value.toString()))} value={field.value}
+                                            onValueChange={(value) => field.onChange(value)} value={field.value}
 
                                             step={1} min={0} />
 
