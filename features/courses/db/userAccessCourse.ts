@@ -3,7 +3,15 @@ import { ProductTable, PurchaseTable, UserCourseAccessTable } from "@/drizzle/sc
 import { and, eq, inArray, isNull } from "drizzle-orm";
 
 export async function addUserCourseAccess({ userId, courseids }: { userId: string, courseids: string[] }, trx: Omit<typeof db, '$client'> = db) {
-    const accesses = await trx.insert(UserCourseAccessTable).values(courseids.map(courseId => ({ userId, courseId }))).onConflictDoNothing().returning();
+    console.log("courseIds", courseids)
+    const accesses = await trx
+        .insert(UserCourseAccessTable)
+        .values(courseids.map(courseId => ({ userId, courseId })))
+        .onConflictDoNothing()
+        .returning()
+    console.log("access", accesses)
+
+
     return accesses
 }
 
@@ -37,7 +45,7 @@ export async function revokeUserCourseAccess({ userId, productId }: { userId: st
     const removedCoursesIds = refundedPurchase.courseProducts
         .flatMap(cp => cp.courseId)
         .filter(courseId => !validCoursesIds.includes(courseId));
-    const revokedCoursesIds =await trx.delete(UserCourseAccessTable)
-    .where(and(eq(UserCourseAccessTable.userId, userId), inArray(UserCourseAccessTable.courseId, removedCoursesIds))).returning();
-    return revokedCoursesIds 
+    const revokedCoursesIds = await trx.delete(UserCourseAccessTable)
+        .where(and(eq(UserCourseAccessTable.userId, userId), inArray(UserCourseAccessTable.courseId, removedCoursesIds))).returning();
+    return revokedCoursesIds
 }
