@@ -49,27 +49,30 @@ async function SuspenseBoundary({ lesson, courseId }: {
                 )}
             </div>
             <div className="flex flex-col gap-2">
-                <h1 className="text-2xl font-semibold">{lesson.name}</h1>
-                {canView &&
-                    <div className="flex justify-between">
-                        <Suspense fallback={<Button isLoading />}>
-                            <ToLessonButton lesson={lesson} courseId={courseId} lessonFunc={getPreviousLesson}>
-                                Previous
-                            </ToLessonButton>
-                        </Suspense>
-                        <CompleteBtn lessonId={lesson.id} isLessonComplete={isLessonComplete} />
-                        {/* <Button onPress={updateLessonCompleteStatus.bind(null, lesson.id, !isLessonComplete)}
+                <div className="flex justify-between">
+                    <h1 className="text-2xl font-semibold">{lesson.name}</h1>
+                    {canView &&
+                        <div className="flex justify-between">
+                            <Suspense fallback={<Button isLoading />}>
+                                <ToLessonButton lesson={lesson} courseId={courseId} lessonFunc={getPreviousLesson}>
+                                    Previous
+                                </ToLessonButton>
+                            </Suspense>
+                            <CompleteBtn lessonId={lesson.id} isLessonComplete={isLessonComplete} />
+                            {/* <Button onPress={updateLessonCompleteStatus.bind(null, lesson.id, !isLessonComplete)}
                             startContent={isLessonComplete ? <CheckSquare2Icon size={20} /> : <XSquareIcon size={20} />}>
                             {isLessonComplete ? "Mark Incomplete" : "Mark Complete"}
                         </Button> */}
-                        <Suspense fallback={<Button isLoading />}>
-                            <ToLessonButton lesson={lesson} courseId={courseId} lessonFunc={getNextLesson}>
-                                Next
-                            </ToLessonButton>
-                        </Suspense>
-                    </div>
+                            <Suspense fallback={<Button isLoading />}>
+                                <ToLessonButton lesson={lesson} courseId={courseId} lessonFunc={getNextLesson}>
+                                    Next
+                                </ToLessonButton>
+                            </Suspense>
+                        </div>
 
-                }
+                    }
+                </div>
+
 
             </div>
             {lesson.description && <p>{lesson.description}</p>
