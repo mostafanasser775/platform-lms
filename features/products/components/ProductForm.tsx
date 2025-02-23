@@ -75,10 +75,7 @@ export function ProductForm({ product, courses }: {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
-                                        <NumberInput formatOptions={{
-                                            style: "currency",
-                                            currency: "USD",
-                                        }} {...field} variant="bordered" radius="sm" label="Price" labelPlacement="outside"
+                                        <NumberInput startContent="$" {...field} variant="bordered" radius="sm" label="Price" labelPlacement="outside"
                                             onValueChange={(value) => field.onChange(value)} value={field.value}
                                             step={1} min={0} />
 
