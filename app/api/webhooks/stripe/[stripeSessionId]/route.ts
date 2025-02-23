@@ -1,4 +1,3 @@
-import { env } from "@/data/env/server"
 import { db } from "@/drizzle/db"
 import { ProductTable, UserTable } from "@/drizzle/schema"
 import { addUserCourseAccess } from "@/features/courses/db/userAccessCourse"
@@ -9,10 +8,10 @@ import { redirect } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 
-export  async function GET(req: NextRequest) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ stripeSessionId: string }> }) {
 
-    const stripeSessionId = await req.nextUrl.searchParams.get("stripeSessionId")
-
+    const { stripeSessionId } = await params
+    console.log(stripeSessionId)
     if (stripeSessionId == null) {
         redirect("/products/purchase-failure")
     }
@@ -29,27 +28,6 @@ export  async function GET(req: NextRequest) {
     }
     return NextResponse.redirect(new URL(redirectUrl, req.url))
 }
-
-export async function POST(req: NextRequest) {
-    const event = await stripeServerClient.webhooks.constructEvent(
-        await req.text(),
-        req.headers.get("stripe-signature") as string,
-        env.STRIPE_WEBHOOK_SECRET
-    )
-    switch (event.type) {
-        case "checkout.session.completed":
-        case "checkout.session.async_payment_succeeded":
-            try {
-                await processStripeCheckoutSession(event.data.object as Stripe.Checkout.Session)
-            }
-            catch {
-                return new Response("Error occurred", { status: 500 })
-            }
-
-    }
-    return new Response("Success", { status: 200 })
-}
-
 async function processStripeCheckoutSession(checkOutSession: Stripe.Checkout.Session) {
     const userId = checkOutSession.metadata?.userId
     const productId = checkOutSession.metadata?.productId
@@ -57,8 +35,7 @@ async function processStripeCheckoutSession(checkOutSession: Stripe.Checkout.Ses
         throw new Error("userId or productId not found in checkout session")
     }
     const [product, user] = await Promise.all([
-        getProduct(productId),
-        getUser(userId)
+        getProduct(productId), getUser(userId)
     ])
     if (product == null || user == null) {
         throw new Error("product or user not found")

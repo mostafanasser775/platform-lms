@@ -30,7 +30,7 @@ export async function getClientSessionSecret(
     ],
     ui_mode: "embedded",
     mode: "payment",
-    return_url: `${env.NEXT_PUBLIC_VERCEL_URL}/api/webhooks/stripe?stripeSessionId={CHECKOUT_SESSION_ID}`,
+    return_url: `${env.NEXT_PUBLIC_VERCEL_URL}/api/webhooks/stripe/{CHECKOUT_SESSION_ID}`,
     customer_email: user.email,
     payment_intent_data: {
       receipt_email: user.email,
