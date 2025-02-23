@@ -4,6 +4,7 @@ import { and, eq, inArray, isNull } from "drizzle-orm";
 
 export async function addUserCourseAccess({ userId, courseids }: { userId: string, courseids: string[] }, trx: Omit<typeof db, '$client'> = db) {
     console.log("courseIds", courseids)
+    console.log("userId", userId)
     const accesses = await trx
         .insert(UserCourseAccessTable)
         .values(courseids.map(courseId => ({ userId, courseId })))
