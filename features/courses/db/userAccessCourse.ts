@@ -7,6 +7,7 @@ export async function addUserCourseAccess({ userId, courseids }: { userId: strin
     const accesses = await trx
         .insert(UserCourseAccessTable)
         .values(courseids.map(courseId => ({ userId, courseId })))
+        .onConflictDoNothing()
         .returning()
     console.log("access", accesses)
 
