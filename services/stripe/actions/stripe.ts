@@ -12,7 +12,7 @@ export async function getClientSessionSecret(
   },
   user: { email: string; id: string }
 ) {
-
+  // const url = process.env.NEXT_PUBLIC_VERCEL_URL
   const session = await stripeServerClient.checkout.sessions.create({
     line_items: [
       {
@@ -30,7 +30,7 @@ export async function getClientSessionSecret(
     ],
     ui_mode: "embedded",
     mode: "payment",
-    return_url: `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/webhooks/stripe?stripeSessionId={CHECKOUT_SESSION_ID}`,
+    return_url: `https://platform-lms.vercel.app/api/webhooks/stripe?stripeSessionId={CHECKOUT_SESSION_ID}`,
     customer_email: user.email,
     payment_intent_data: {
       receipt_email: user.email,

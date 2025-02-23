@@ -21,6 +21,7 @@ export function StripeCheckoutForm({
     id: string
   }
 }) {
+  console.log(user)
   return (
     <EmbeddedCheckoutProvider
       stripe={stripeClientPromise}

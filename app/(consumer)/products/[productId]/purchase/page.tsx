@@ -37,7 +37,7 @@ export default async function PurchasePage({ params, searchParams }:
         }
         else
             return (
-                <div className="container my-4">
+                <div className="container my-8">
                     <StripeCheckoutForm product={product} user={user} />
 
                 </div>
