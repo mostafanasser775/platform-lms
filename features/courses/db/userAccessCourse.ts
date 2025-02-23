@@ -5,15 +5,22 @@ import { and, eq, inArray, isNull } from "drizzle-orm";
 export async function addUserCourseAccess({ userId, courseids }: { userId: string, courseids: string[] }, trx: Omit<typeof db, '$client'> = db) {
     console.log("courseIds", courseids)
     console.log("userId", userId)
-    const accesses = await trx
-            .insert(UserCourseAccessTable)
-            .values(courseids.map(courseId => ({ userId, courseId })))
-            .returning();
+    for (const courseId of courseids) {
+        try {
+            const result = await trx
+                .insert(UserCourseAccessTable)
+                .values({ userId, courseId })
+                .onConflictDoNothing()
+                .returning();
+    
+            console.log(`Inserted access for Course ID: ${courseId}`, result);
+        } catch (error) {
+            console.error(`Error inserting access for Course ID: ${courseId}`, error);
+        }
+    }
 
-    console.log("access", accesses)
 
-
-    return accesses
+    //return accesses
 }
 
 export async function revokeUserCourseAccess({ userId, productId }: { userId: string, productId: string }, trx: Omit<typeof db, '$client'> = db) {
