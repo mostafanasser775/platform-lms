@@ -1,13 +1,17 @@
 import { db } from "@/drizzle/db";
 import { ProductTable, PurchaseTable, UserCourseAccessTable } from "@/drizzle/schema";
 import { and, eq, inArray, isNull } from "drizzle-orm";
-export const revalidate = 0; // Disable caching
 
 export async function addUserCourseAccess({ userId, courseids }: { userId: string, courseids: string[] }, trx: Omit<typeof db, '$client'> = db) {
     console.log("courseIds", courseids)
-    for (const courseId of courseids) {
-        await trx.insert(UserCourseAccessTable).values({ userId, courseId })
-    }
+    const accesses = await trx
+        .insert(UserCourseAccessTable)
+        .values(courseids.map(courseId => ({ userId, courseId })))
+        .returning()
+    console.log("access", accesses)
+
+
+    return accesses
 }
 
 export async function revokeUserCourseAccess({ userId, productId }: { userId: string, productId: string }, trx: Omit<typeof db, '$client'> = db) {
