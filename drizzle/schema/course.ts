@@ -4,6 +4,7 @@ import { relations } from "drizzle-orm";
 import { CourseProdcutTable } from "./courseProduct";
 import { UserCourseAccessTable } from "./userCourseAccess";
 import { CourseSectionTable } from "./courseSections";
+
 export const CourseTable = pgTable(("courses"), {
     id,
     name: text().unique().notNull(),

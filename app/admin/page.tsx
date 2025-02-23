@@ -3,6 +3,8 @@ import { db } from "@/drizzle/db";
 import { DashboardClientLandingPage } from "./DashboardClientLandingPage";
 import { CourseSectionTable, CourseTable, LessonTable, ProductTable, PurchaseTable, UserCourseAccessTable } from "@/drizzle/schema";
 import { count, countDistinct, isNotNull, sql, sum, desc } from "drizzle-orm"
+export const revalidate = 0; // Disable caching
+
 export default async function DashboardLandingPage() {
   const { averageNetPurchasesPerCustomer, netPurchases, netSales, refundedPurchases, totalRefunds } = await getPurchaseDetails()
   const totalCourses = await getTotalCourses()
