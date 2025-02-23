@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, useTransition } from 'react';
+import React, { useState, useTransition } from 'react';
 import { ArrowUpRight, Users, Package, BookOpen, Folders, FileText, DollarSign, RefreshCw, ShoppingCart, UserCheck, TrendingUp, Clock, Filter, Download, Search } from 'lucide-react';
 import { Button } from '@heroui/button';
 import { useRouter } from 'next/navigation';
@@ -48,14 +48,10 @@ export function DashboardClientLandingPage({
 
     });
   }
-  const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
   const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
+
 
   // Simulated data
   const data = {
@@ -71,13 +67,6 @@ export function DashboardClientLandingPage({
     ]
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-blue-600"></div>
-      </div>
-    );
-  }
 
   return (
     <div >
