@@ -4,15 +4,14 @@ import { and, eq, inArray, isNull } from "drizzle-orm";
 
 export async function addUserCourseAccess({ userId, courseids }: { userId: string, courseids: string[] }, trx: Omit<typeof db, '$client'> = db) {
     console.log("courseIds", courseids)
-    const accesses = await trx
-        .insert(UserCourseAccessTable)
-        .values(courseids.map(courseId => ({ userId, courseId })))
-        .onConflictDoNothing()
-        .returning()
-    console.log("access", accesses)
-
-
-    return accesses
+    for (const courseId of courseids) {
+        const result = await trx
+            .insert(UserCourseAccessTable)
+            .values({ userId, courseId })
+            .onConflictDoNothing()
+            .returning();
+        
+    }
 }
 
 export async function revokeUserCourseAccess({ userId, productId }: { userId: string, productId: string }, trx: Omit<typeof db, '$client'> = db) {
