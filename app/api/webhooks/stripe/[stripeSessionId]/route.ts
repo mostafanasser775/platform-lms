@@ -17,8 +17,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ stri
     }
     let redirectUrl: string
     try {
-        const checkOutSession = await stripeServerClient.checkout.sessions.retrieve(stripeSessionId,
-            { expand: ["line_items"] })
+        const checkOutSession = await stripeServerClient.checkout.sessions.retrieve(stripeSessionId,{ expand: ["line_items"] })
 
         const productId = await processStripeCheckoutSession(checkOutSession)
         redirectUrl = `/products/${productId}/purchase/success`
@@ -31,6 +30,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ stri
 async function processStripeCheckoutSession(checkOutSession: Stripe.Checkout.Session) {
     const userId = checkOutSession.metadata?.userId
     const productId = checkOutSession.metadata?.productId
+    console.log("it reaches here")
+    console.log(userId,productId)
     if (userId == null || productId == null) {
         throw new Error("userId or productId not found in checkout session")
     }
@@ -41,7 +42,7 @@ async function processStripeCheckoutSession(checkOutSession: Stripe.Checkout.Ses
         throw new Error("product or user not found")
     }
     const courseids = product.courseProducts.map(c => c.courseId)
-    db.transaction(async trx => {
+   await  db.transaction(async trx => {
         try {
             await addUserCourseAccess({ userId: user.id, courseids }, trx)
             await insertPurchaseDB({
