@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { SortableLessonList } from "@/features/lessons/components/SortableLessonList";
 import { SectionModal } from "@/features/courseSections/components/SectionModal";
 import { LessonModal } from "@/features/lessons/components/LessonModal";
+export const revalidate = 0; // Disable caching
 
 export default async function EditCoursePage({ params }: { params: Promise<{ courseId: string }> }) {
     const { courseId } = await params

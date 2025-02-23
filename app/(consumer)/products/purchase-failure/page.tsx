@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { XCircle } from "lucide-react";
 import Link from "next/link";
+export const revalidate = 0; // Disable caching
 
 export default function PurchaseFailurePage() {
 

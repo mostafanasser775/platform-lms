@@ -21,6 +21,8 @@ interface ProductPageProps {
     params: Promise<{ productId: string }>;
 }
 
+export const revalidate = 0; // Disable caching
+
 export default async function ProductPage({ params }: ProductPageProps) {
     const { productId } = await params;
     const Product = await getPublicProduct(productId);

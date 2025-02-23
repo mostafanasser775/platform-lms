@@ -21,6 +21,8 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Progress } from "@heroui/progress";
 
+export const revalidate = 0; // Disable caching
+
 export default function CoursesPage() {
   return (
     <div className="container my-8">

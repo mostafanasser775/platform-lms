@@ -3,6 +3,7 @@ import { db } from "@/drizzle/db";
 import { CourseTable } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
+export const revalidate = 0; // Disable caching
 
 export default async function CoursePage({ params }: { params: Promise<{ courseId: string }> }) {
     const { courseId } = await params;

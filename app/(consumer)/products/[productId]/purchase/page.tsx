@@ -9,6 +9,8 @@ import { db } from "@/drizzle/db";
 import { ProductTable } from "@/drizzle/schema";
 import { wherePublicProducts } from "@/features/products/permissions/products";
 import { and, eq } from "drizzle-orm";
+export const revalidate = 0; // Disable caching
+
 export default async function PurchasePage({ params, searchParams }:
     {
         params: Promise<{ productId: string }>,

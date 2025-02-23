@@ -5,6 +5,7 @@ import UserPurchasesTable, { UserPurchasesTableSkeleton } from "@/features/purch
 import { getCurrentUser } from "@/services/clerk";
 import { desc, eq } from "drizzle-orm";
 import { Suspense } from "react";
+export const revalidate = 0; // Disable caching
 
 export default function PurchasesPage() {
     return (

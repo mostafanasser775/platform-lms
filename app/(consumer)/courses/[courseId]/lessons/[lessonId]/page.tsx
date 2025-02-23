@@ -10,6 +10,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ReactNode, Suspense } from "react";
 import { CompleteBtn } from "./CompleteBtn";
+export const revalidate = 0; // Disable caching
 
 export default async function LessonPage({ params }: { params: Promise<{ courseId: string, lessonId: string }> }) {
     const { courseId, lessonId } = await params

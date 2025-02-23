@@ -10,6 +10,8 @@ import { eq, asc, countDistinct } from "drizzle-orm";
 import { ProductTable } from "@/features/products/components/ProductTable";
 import { TransationLinkBtn } from "@/components/TransationLinkBtn";
 import { PlusIcon } from "lucide-react";
+export const revalidate = 0; // Disable caching
+
 export default async function productsPage() {
     const products = await getProducts()
     return (

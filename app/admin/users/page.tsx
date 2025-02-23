@@ -4,6 +4,8 @@ import { UserTable } from "@/drizzle/schema";
 import { and, eq, not } from "drizzle-orm";
 import { UsersTable } from "./UsersTable";
 import { PageHeader } from "@/components/PageHeader";
+export const revalidate = 0; // Disable caching
+
 export default async function UsersPage() {
     const Users = await getUsers()
     return <div>

@@ -3,6 +3,7 @@ import { db } from "@/drizzle/db"
 import { PurchaseTable } from "@/drizzle/schema"
 import PurchasesSalesTable from "@/features/purchase/compoenents/PurchasesSalesTable"
 import { desc } from "drizzle-orm"
+export const revalidate = 0; // Disable caching
 
 export default async function SalesPurcahsePage() {
     const purchases = await getPurchases()

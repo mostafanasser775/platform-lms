@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, Play, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+export const revalidate = 0; // Disable caching
 
 export default async function PurchaseSuccessPage({ params }: { params: Promise<{ productId: string }> }) {
     const { productId } = await params;

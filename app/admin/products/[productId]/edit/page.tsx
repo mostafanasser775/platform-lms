@@ -5,6 +5,7 @@ import { ProductTable } from "@/drizzle/schema/product";
 import { ProductForm } from "@/features/products/components/ProductForm";
 import { asc, eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
+export const revalidate = 0; // Disable caching
 
 export default async function EditProductPage({ params }: { params: Promise<{ productId: string }> }) {
     const { productId } = await params;

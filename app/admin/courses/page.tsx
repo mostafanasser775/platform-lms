@@ -6,6 +6,8 @@ import { countDistinct, eq, asc } from "drizzle-orm";
 
 import { TransationLinkBtn } from "@/components/TransationLinkBtn";
 import { PlusIcon } from "lucide-react";
+export const revalidate = 0; // Disable caching
+
 export default async function CoursesPage() {
     const courses = await getCourses()
     return (

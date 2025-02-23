@@ -23,6 +23,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { Fragment, Suspense } from "react"
 import Stripe from "stripe"
+export const revalidate = 0; // Disable caching
 
 export default async function PurchasePage({ params, }: { params: Promise<{ purchaseId: string }> }) {
   const { purchaseId } = await params

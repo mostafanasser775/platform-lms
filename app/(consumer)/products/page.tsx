@@ -5,6 +5,8 @@ import { db } from "@/drizzle/db";
 import { ProductTable } from "@/drizzle/schema";
 import { ProductCard } from "@/features/products/components/ProductCard";
 import { asc, eq } from "drizzle-orm";
+export const revalidate = 0; // Disable caching
+
 export default async function AllCoursesPage() {
     const products = await getPublicProducts();
 
