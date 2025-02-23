@@ -18,9 +18,10 @@ export function ActionButton({ action, title }: { title?: string, action: () => 
             startTransition(async () => {
                 const data = await action()
                 router.refresh()
-                actionToast({ toastData: data })
+                actionToast({ toastData: data })  
+                setIsOpen(!isOpen)
+
             })
-            setIsOpen(!isOpen)
         }
 
 
