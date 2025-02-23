@@ -76,7 +76,8 @@ export function ProductForm({ product, courses }: {
                                 <FormItem>
                                     <FormControl>
                                         <NumberInput startContent="$" {...field} variant="bordered" radius="sm" label="Price" labelPlacement="outside"
-                                            onValueChange={(value) => field.onChange(value)} value={field.value}
+                                            onValueChange={(value) => field.onChange(parseFloat(value.toString()))} value={field.value}
+
                                             step={1} min={0} />
 
                                     </FormControl>
@@ -156,7 +157,7 @@ export function ProductForm({ product, courses }: {
                         render={({ field }) => (
                             <FormItem>
                                 <FormControl>
-                                    <Textarea variant="bordered" radius="sm" label='Description'  
+                                    <Textarea variant="bordered" radius="sm" label='Description'
                                         placeholder="Enter Lesson Name" isRequired labelPlacement="outside" {...field} value={field.value ?? ''} />
                                 </FormControl>
                                 <FormMessage />

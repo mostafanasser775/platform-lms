@@ -26,6 +26,7 @@
 //      8-Go to the Products
 //      9-make a Product also edit
 //      10-as a user check this products if exists and buy it
+//      11-Go to the Users and check if the user has bought the course
 
 ///////////////////////////////////////////////////
 /////////////////End of Lms APP////////////////////
