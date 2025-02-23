@@ -27,7 +27,7 @@ export function ActionButton({ action, title }: { title?: string, action: () => 
 
         return (
             <>
-                <Button onPress={() => setIsOpen(!isOpen)} isIconOnly={!title} color={title === 'Refund' ? "warning" : "danger"} radius="sm">{title && title}{!title && (isLoading ? "..." : <Trash2Icon size={20} />)}</Button >
+                <Button isLoading={isLoading} onPress={() => setIsOpen(!isOpen)} isIconOnly={!title} color={title === 'Refund' ? "warning" : "danger"} radius="sm">{title && title}{!title && (isLoading ? "..." : <Trash2Icon size={20} />)}</Button >
                 <Modal isOpen={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
                     <ModalContent>
                         <ModalHeader className="border-b">Delete</ModalHeader>
