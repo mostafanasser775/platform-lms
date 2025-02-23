@@ -35,7 +35,7 @@ export const Hero = () => {
                 <ArrowRight className="ml-2 -mr-1 h-5 w-5" />
               </motion.button>
             </Link>
-            <Link href={'/all-courses'}>
+            <Link href={'/products'}>
               <button className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-blue-100 hover:bg-blue-200">
                 Explore Courses
               </button>
