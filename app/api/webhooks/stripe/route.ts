@@ -63,6 +63,9 @@ async function processStripeCheckoutSession(checkOutSession: Stripe.Checkout.Ses
         getProduct(productId),
         getUser(userId)
     ])
+    console.log("product",product)
+    console.log("user",user)
+
     if (product == null || user == null) {
         throw new Error("product or user not found")
     }
