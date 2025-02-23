@@ -44,8 +44,9 @@ export default function NavBar() {
                     <Suspense fallback={<div>...</div>}>
                         <SignedIn>
                             <AdminLink />
-                            <Button variant="light" as={Link} href={'/courses'}>Courses</Button>
-                            <Button variant="light" as={Link} href={'/purchases'}>Purchases</Button>
+                            <Button variant="light" as={Link} href={'/products'}>Courses</Button>
+                            <Button variant="light" as={Link} href={'/courses'}>My Learning</Button>
+                            <Button variant="light" as={Link} href={'/purchases'}>My Purchases</Button>
                         </SignedIn>
                     </Suspense>
                 </NavbarContent>

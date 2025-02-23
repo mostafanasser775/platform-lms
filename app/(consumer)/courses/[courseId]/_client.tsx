@@ -3,7 +3,7 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { CheckCircle2Icon, VideoIcon } from "lucide-react"
+import { CheckCircle2Icon, Eye, VideoIcon } from "lucide-react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 
@@ -13,11 +13,11 @@ export function CoursePageClient({
     course: {
         id: string
         courseSections: {
-            id: string
-            name: string
+            id: string, name: string
             lessons: {
                 id: string
-                name: string
+                name: string,
+                status: string,
                 isComplete: boolean
             }[]
         }[]
@@ -43,21 +43,18 @@ export function CoursePageClient({
                     </AccordionTrigger>
                     <AccordionContent className="flex flex-col gap-1">
                         {section.lessons.map(lesson => (
-                            <Button
-                                variant="ghost"
-                                asChild
-                                key={lesson.id}
-                                className={cn(
-                                    "justify-start",
-                                    lesson.id === lessonId &&
-                                    "bg-slate-400 text-accent-foreground"
+                            <Button variant="ghost" asChild key={lesson.id}
+                                className={cn("justify-start", lesson.id === lessonId &&
+                                    "bg-slate-400 text-accent-foreground",
+                                    lesson.status === 'preview' && 'text-blue-600'
                                 )}
                             >
-                                <Link href={`/courses/${course.id}/lessons/${lesson.id}`}>
-                                    <VideoIcon />
+                                <Link href={`/courses/${course.id}/lessons/${lesson.id}`} >
+                                    {lesson.status === 'public' ? <VideoIcon /> : <Eye />}
+
                                     {lesson.name}
                                     {lesson.isComplete && (
-                                        <CheckCircle2Icon className="ml-auto" />
+                                        <CheckCircle2Icon className="ml-auto z-10" />
                                     )}
                                 </Link>
                             </Button>

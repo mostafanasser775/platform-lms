@@ -49,7 +49,7 @@ async function CourseGrid() {
     return (
       <div className="flex flex-col gap-3 items-start text-center mt-6">
         <p className="text-lg font-medium">You have no courses yet.</p>
-        <Button as={Link} href="/" size="lg" color="primary">Browse Courses</Button>
+        <Button as={Link} href="/products" size="lg" color="primary">Browse Courses</Button>
       </div>
     );
   }

@@ -15,6 +15,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { VideoIcon } from "lucide-react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Button } from "@heroui/button";
+import { TransationLinkBtn } from "@/components/TransationLinkBtn";
 
 interface ProductPageProps {
     params: Promise<{ productId: string }>;
@@ -38,17 +39,24 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     {Product.courses.map(course => (
                         <Card key={course.id} className="border border-gray-300 rounded-xl shadow-lg p-6">
                             <CardHeader className="mb-4">
-                                <div className="flex flex-col gap-2">
-                                    <h2 className="text-xl font-semibold text-gray-800">{course.name}</h2>
-                                    <div className="text-gray-500 text-sm block">
-                                        {formatPlural(course.courseSections.length, {
-                                            singular: "section", plural: "sections",
-                                        }) + " . " +
-                                            formatPlural(sumArray(course.courseSections, s => s.lessons.length), {
-                                                singular: "lesson", plural: "lessons",
-                                            })}
+                                <div className="flex flex-row w-full justify-between">
+                                    <div className="flex flex-col gap-2">
+                                        <h2 className="text-xl font-semibold text-gray-800">{course.name}</h2>
+                                        <div className="text-gray-500 text-sm block">
+                                            {formatPlural(course.courseSections.length, {
+                                                singular: "section", plural: "sections",
+                                            }) + " . " +
+                                                formatPlural(sumArray(course.courseSections, s => s.lessons.length), {
+                                                    singular: "lesson", plural: "lessons",
+                                                })}
+                                        </div>
                                     </div>
+
+                                    <TransationLinkBtn title="Browse Content" icon={<VideoIcon size={20} />}
+                                     variant="solid" color="primary" link={`/courses/${course.id}`} />
+
                                 </div>
+
                             </CardHeader>
 
                             <CardBody className="space-y-4">
@@ -65,7 +73,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                                         })}
                                                     </span>
                                                 </div>
-                                                <span className="text-accent">▼</span>
                                             </AccordionTrigger>
                                             <AccordionContent className="pl-4">
                                                 {section.lessons.map(lesson => (

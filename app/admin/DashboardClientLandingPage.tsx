@@ -1,10 +1,45 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import React, { useState, useEffect, useTransition } from 'react';
 import { ArrowUpRight, Users, Package, BookOpen, Folders, FileText, DollarSign, RefreshCw, ShoppingCart, UserCheck, TrendingUp, Clock, Filter, Download, Search } from 'lucide-react';
 import { Button } from '@heroui/button';
 import { useRouter } from 'next/navigation';
+import { Chip } from '@heroui/chip';
 
-export function DashboardClientLandingPage() {
+export function DashboardClientLandingPage({
+
+  averageNetPurchasesPerCustomer,
+  netPurchases,
+  netSales,
+  refundedPurchases,
+  totalRefunds,
+  totalCourses,
+  totalStudents,
+  totalProducts,
+  totalCourseSections,
+  totalLessons,
+  topPurchases,
+}: {
+
+  averageNetPurchasesPerCustomer: number | 0,
+  netPurchases: number | 0,
+  netSales: number | 0,
+  refundedPurchases: number | 0,
+  totalRefunds: number | 0,
+  totalCourses: number | 0,
+  totalStudents: number | 0,
+  totalProducts: number | 0,
+  totalCourseSections: number | 0,
+  totalLessons: number | 0,
+  topPurchases: {
+    id: string,
+    pricePaidInCents: number,
+    refundedAt: null | Date,
+    createdAt: Date,
+    user: { name: string }
+  }[]
+}
+) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   async function Relaoad() {
@@ -25,24 +60,9 @@ export function DashboardClientLandingPage() {
 
   // Simulated data
   const data = {
-    netSales: 150000,
-    totalRefunds: 5000,
-    netPurchases: 1200,
-    refundedPurchases: 50,
-    averageNetPurchasesPerCustomer: 2.5,
-    totalStudents: 800,
-    totalProducts: 25,
-    totalCourses: 15,
-    totalCourseSections: 45,
-    totalLessons: 180,
+
     lastUpdated: new Date().toLocaleTimeString(),
-    recentPurchases: [
-      { id: 1, customer: 'John Doe', product: 'Advanced React Course', amount: 199, date: '2024-03-15', status: 'completed' },
-      { id: 2, customer: 'Jane Smith', product: 'TypeScript Masterclass', amount: 149, date: '2024-03-14', status: 'completed' },
-      { id: 3, customer: 'Bob Johnson', product: 'Node.js Basics', amount: 99, date: '2024-03-14', status: 'refunded' },
-      { id: 4, customer: 'Alice Brown', product: 'Web Security Course', amount: 179, date: '2024-03-13', status: 'completed' },
-      { id: 5, customer: 'Charlie Wilson', product: 'GraphQL Advanced', amount: 159, date: '2024-03-13', status: 'pending' },
-    ],
+
     topProducts: [
       { name: 'Advanced React Course', sales: 245, revenue: 48755, rating: 4.8 },
       { name: 'TypeScript Masterclass', sales: 189, revenue: 28161, rating: 4.9 },
@@ -96,8 +116,8 @@ export function DashboardClientLandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {/* Financial Stats */}
           <div className="col-span-full xl:col-span-2 shadow border  rounded-medium">
-            <div className="bg-white rounded-xl p-4 shadow-sm mb-4">
-              <div className="flex items-center gap-2 mb-2">
+            <div className="bg-white rounded-xl p-4 mb-4">
+              <div className="flex items-center gap-2 ">
                 <TrendingUp className="w-5 h-5 text-blue-600" />
                 <h2 className="text-lg font-semibold text-gray-700">Financial Overview</h2>
               </div>
@@ -105,17 +125,17 @@ export function DashboardClientLandingPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <StatCard
                   title="Net Sales"
-                  value={formatPrice(data.netSales)}
+                  value={formatPrice(netSales)}
                   icon={DollarSign}
-                  trend="+12.5%"
+                  //trend="+12.5%"
                   className="bg-green-50 border-green-200"
                   description="Total revenue after refunds"
                 />
                 <StatCard
                   title="Total Refunds"
-                  value={formatPrice(data.totalRefunds)}
+                  value={formatPrice(totalRefunds)}
                   icon={RefreshCw}
-                  trend="-2.3%"
+                  // trend="-2.3%"
                   className="bg-red-50 border-red-200"
                   description="Amount refunded to customers"
                 />
@@ -125,32 +145,25 @@ export function DashboardClientLandingPage() {
 
           {/* Purchase Stats */}
           <div className="col-span-full xl:col-span-3  shadow border  rounded-medium">
-            <div className="bg-white rounded-xl p-4 shadow-sm mb-4">
-              <div className="flex items-center gap-2 mb-2">
+            <div className="bg-white rounded-xl p-4 mb-4">
+              <div className="flex items-center gap-2">
                 <ShoppingCart className="w-5 h-5 text-blue-600" />
                 <h2 className="text-lg font-semibold text-gray-700">Purchase Metrics</h2>
               </div>
               <p className="text-sm text-gray-500 mb-4">Monitor purchase activity and customer behavior</p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <StatCard
-                  title="Active Purchases"
-                  value={formatNumber(data.netPurchases)}
+                <StatCard title="Active Purchases" value={formatNumber(netPurchases)}
                   icon={ShoppingCart}
-                  trend="+8.1%"
-                  description="Current active purchases"
-                />
+                  //trend="+8.1%"
+                  description="Current active purchases" />
                 <StatCard
                   title="Refunded Purchases"
-                  value={formatNumber(data.refundedPurchases)}
-                  icon={RefreshCw}
-                  trend="-5.2%"
+                  value={formatNumber(refundedPurchases)} icon={RefreshCw}
+                  //  trend="-5.2%" 
                   description="Total refunded orders"
                 />
-                <StatCard
-                  title="Purchases/User"
-                  value={formatNumber(data.averageNetPurchasesPerCustomer)}
-                  icon={UserCheck}
-                  trend="+3.7%"
+                <StatCard title="Purchases/User" value={formatNumber(averageNetPurchasesPerCustomer)} icon={UserCheck}
+                  //  trend="+3.7%" 
                   description="Average purchases per customer"
                 />
               </div>
@@ -159,8 +172,8 @@ export function DashboardClientLandingPage() {
 
           {/* Platform Stats */}
           <div className="col-span-full  shadow border  rounded-medium">
-            <div className="bg-white rounded-xl p-4 shadow-sm mb-6">
-              <div className="flex items-center gap-2 mb-2">
+            <div className="bg-white rounded-xl p-4  mb-6">
+              <div className="flex items-center gap-2">
                 <Package className="w-5 h-5 text-blue-600" />
                 <h2 className="text-lg font-semibold text-gray-700">Platform Statistics</h2>
               </div>
@@ -168,37 +181,37 @@ export function DashboardClientLandingPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 <StatCard
                   title="Total Students"
-                  value={formatNumber(data.totalStudents)}
+                  value={formatNumber(totalStudents)}
                   icon={Users}
-                  trend="+15.3%"
+                  // trend="+15.3%"
                   description="Active enrolled students"
                 />
                 <StatCard
                   title="Products"
-                  value={formatNumber(data.totalProducts)}
+                  value={formatNumber(totalProducts)}
                   icon={Package}
-                  trend="+2.8%"
+                  // trend="+2.8%"
                   description="Available products"
                 />
                 <StatCard
                   title="Courses"
-                  value={formatNumber(data.totalCourses)}
+                  value={formatNumber(totalCourses)}
                   icon={BookOpen}
-                  trend="+4.2%"
+                  //  trend="+4.2%"
                   description="Total active courses"
                 />
                 <StatCard
                   title="Course Sections"
-                  value={formatNumber(data.totalCourseSections)}
+                  value={formatNumber(totalCourseSections)}
                   icon={Folders}
-                  trend="+6.7%"
+                  //    trend="+6.7%"
                   description="Course content sections"
                 />
                 <StatCard
                   title="Lessons"
-                  value={formatNumber(data.totalLessons)}
+                  value={formatNumber(totalLessons)}
                   icon={FileText}
-                  trend="+9.1%"
+                  //trend="+9.1%"
                   description="Individual lesson content"
                 />
               </div>
@@ -217,13 +230,7 @@ export function DashboardClientLandingPage() {
                   >
                     Recent Purchases
                   </button>
-                  <button
-                    className={`px-4 py-2 rounded-lg transition-colors duration-200 ${activeTab === 'products' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }`}
-                    onClick={() => setActiveTab('products')}
-                  >
-                    Top Products
-                  </button>
+
                 </div>
                 <div className="flex gap-2">
                   <button className="p-2 rounded-lg hover:bg-gray-100">
@@ -235,67 +242,38 @@ export function DashboardClientLandingPage() {
                 </div>
               </div>
 
-              {activeTab === 'overview' ? (
-                <div className="overflow-x-auto">
-                  <table className="min-w-full">
-                    <thead>
-                      <tr className="border-b border-gray-200">
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Customer</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Product</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Amount</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Date</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.recentPurchases.map((purchase) => (
-                        <tr key={purchase.id} className="border-b border-gray-100 hover:bg-gray-50">
-                          <td className="px-4 py-3 text-sm text-gray-800">{purchase.customer}</td>
-                          <td className="px-4 py-3 text-sm text-gray-800">{purchase.product}</td>
-                          <td className="px-4 py-3 text-sm text-gray-800">{formatPrice(purchase.amount)}</td>
-                          <td className="px-4 py-3 text-sm text-gray-800">{purchase.date}</td>
-                          <td className="px-4 py-3 text-sm">
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${purchase.status === 'completed' ? 'bg-green-100 text-green-800' :
-                              purchase.status === 'refunded' ? 'bg-red-100 text-red-800' :
-                                'bg-yellow-100 text-yellow-800'
-                              }`}>
-                              {purchase.status.charAt(0).toUpperCase() + purchase.status.slice(1)}
-                            </span>
+
+              <div className="overflow-x-auto">
+                <table className="min-w-full border-collapse border border-gray-200">
+                  <thead>
+                    <tr className="bg-gray-100 border-b border-gray-200">
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Customer</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Amount</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Purchase Date</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {topPurchases.length > 0 ? (
+                      topPurchases.map((purchase) => (
+                        <tr key={purchase.id} className="border-b border-gray-200 hover:bg-gray-50">
+                          <td className="px-4 py-3 text-gray-800">{purchase.user.name}</td>
+                          <td className="px-4 py-3 text-gray-800">${(purchase.pricePaidInCents / 100).toFixed(2)}</td>
+                          <td className="px-4 py-3 text-gray-800">{new Date(purchase.createdAt).toLocaleDateString()}</td>
+                          <td className={`px-4 py-3 font-semibold `}>
+                            {purchase.refundedAt ? <Chip color='warning'>Refunded</Chip> : <Chip color='success'>Completed</Chip>}
                           </td>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="min-w-full">
-                    <thead>
-                      <tr className="border-b border-gray-200">
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Product Name</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Total Sales</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Revenue</th>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-600">Rating</th>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={4} className="px-4 py-3 text-center text-gray-500">No purchases found.</td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {data.topProducts.map((product, index) => (
-                        <tr key={index} className="border-b border-gray-100 hover:bg-gray-50">
-                          <td className="px-4 py-3 text-sm text-gray-800">{product.name}</td>
-                          <td className="px-4 py-3 text-sm text-gray-800">{formatNumber(product.sales)}</td>
-                          <td className="px-4 py-3 text-sm text-gray-800">{formatPrice(product.revenue)}</td>
-                          <td className="px-4 py-3 text-sm text-gray-800">
-                            <div className="flex items-center gap-1">
-                              <span className="text-yellow-500">★</span>
-                              {product.rating}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
             </div>
           </div>
         </div>
@@ -308,23 +286,26 @@ interface StatCardProps {
   title: string;
   value: string;
   icon: React.ComponentType<{ className?: string }>;
-  trend: string;
+  trend?: string;
   className?: string;
   description?: string;
 }
 
 function StatCard({ title, value, icon: Icon, trend, className = '', description }: StatCardProps) {
-  const isPositive = trend.startsWith('+');
+  const isPositive = trend?.startsWith('+');
 
   return (
     <div className={`rounded-xl border p-4 shadow-sm transition-all duration-200 hover:shadow-md hover:scale-[1.02] ${className}`}>
       <div className="flex items-center justify-between mb-2">
         <Icon className="w-5 h-5 text-gray-600" />
-        <span className={`text-sm font-medium flex items-center gap-1 ${isPositive ? 'text-green-600' : 'text-red-600'
-          }`}>
-          {trend}
-          <ArrowUpRight className={`w-4 h-4 ${isPositive ? '' : 'rotate-180'}`} />
-        </span>
+        {trend && (
+          <span className={`text-sm font-medium flex items-center gap-1 ${isPositive ? 'text-green-600' : 'text-red-600'
+            }`}>
+            {trend}
+            <ArrowUpRight className={`w-4 h-4 ${isPositive ? '' : 'rotate-180'}`} />
+          </span>
+        )}
+
       </div>
       <p className="text-sm font-medium text-gray-600">{title}</p>
       <p className="text-2xl font-bold text-gray-800 mt-1">{value}</p>

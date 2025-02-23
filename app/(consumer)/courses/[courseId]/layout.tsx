@@ -87,7 +87,7 @@ function mapCourse(
         courseSections: {
             name: string, id: string
             lessons: {
-                name: string, id: string
+                name: string, id: string, status: string
             }[]
         }[]
     },
