@@ -9,9 +9,9 @@ import { redirect } from "next/navigation"
 import { NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 
-export async function GET(req: NextRequest) {
+export default async function GET(req: NextRequest) {
 
-    const stripeSessionId = req.nextUrl.searchParams.get("stripeSessionId")
+    const stripeSessionId = await req.nextUrl.searchParams.get("stripeSessionId")
 
     if (stripeSessionId == null) {
         redirect("/products/purchase-failure")
