@@ -155,9 +155,8 @@ export function ProductForm({ product, courses }: {
                     <FormField control={form.control} name="description"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Description</FormLabel>
                                 <FormControl>
-                                    <Textarea variant="bordered" radius="sm" label='Description'
+                                    <Textarea variant="bordered" radius="sm" label='Description'  
                                         placeholder="Enter Lesson Name" isRequired labelPlacement="outside" {...field} value={field.value ?? ''} />
                                 </FormControl>
                                 <FormMessage />
