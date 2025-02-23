@@ -20,12 +20,13 @@ export function ActionButton({ action, title }: { title?: string, action: () => 
                 router.refresh()
                 actionToast({ toastData: data })
             })
+            setIsOpen(!isOpen)
         }
 
 
         return (
             <>
-                <Button onPress={() => setIsOpen(!isOpen)} isIconOnly={!title} color="danger" radius="sm">{title && title}{!title && (isLoading ? "..." : <Trash2Icon size={20} />) }</Button>
+                <Button onPress={() => setIsOpen(!isOpen)} isIconOnly={!title} color={title === 'Refund' ? "warning" : "danger"} radius="sm">{title && title}{!title && (isLoading ? "..." : <Trash2Icon size={20} />)}</Button >
                 <Modal isOpen={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
                     <ModalContent>
                         <ModalHeader className="border-b">Delete</ModalHeader>
