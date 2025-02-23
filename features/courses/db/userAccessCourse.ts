@@ -1,16 +1,12 @@
 import { db } from "@/drizzle/db";
 import { ProductTable, PurchaseTable, UserCourseAccessTable } from "@/drizzle/schema";
 import { and, eq, inArray, isNull } from "drizzle-orm";
+export const revalidate = 0; // Disable caching
 
 export async function addUserCourseAccess({ userId, courseids }: { userId: string, courseids: string[] }, trx: Omit<typeof db, '$client'> = db) {
     console.log("courseIds", courseids)
     for (const courseId of courseids) {
-        const result = await trx
-            .insert(UserCourseAccessTable)
-            .values({ userId, courseId })
-            .onConflictDoNothing()
-            .returning();
-        
+        await trx.insert(UserCourseAccessTable).values({ userId, courseId })
     }
 }
 
