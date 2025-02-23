@@ -1,6 +1,5 @@
 'use client'
 import { formatPlural } from "@/lib/formatters";
-import { Trash2Icon } from "lucide-react";
 import { ActionButton } from "@/components/ActionButton";
 import { deleteCourse } from "../actions/courses";
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell } from "@heroui/table";
@@ -14,7 +13,7 @@ export function CourseTable({ courses }: {
     }
 
     return (
-        <div className="border rounded-medium">
+        <div >
             <Table aria-label="Example static collection table" removeWrapper selectionMode="single">
 
                 <TableHeader className="">
@@ -38,9 +37,7 @@ export function CourseTable({ courses }: {
                             <TableCell className="px-6 text-right">
                                 <div className="flex items-center gap-3 justify-end">
                                     <TransationLinkBtn title="Edit" color="default"  variant="solid" link={`/admin/courses/${course.id}/edit`}/>
-                                    <ActionButton variant="destructive" size="sm" requireAreYouSure action={deleteCourse.bind(null, course.id)}>
-                                        <Trash2Icon className="w-4 h-4" />
-                                    </ActionButton>
+                                    <ActionButton  action={deleteCourse.bind(null, course.id)}/>
                                 </div>
                             </TableCell>
                         </TableRow>

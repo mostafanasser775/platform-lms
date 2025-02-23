@@ -8,7 +8,7 @@ import { Suspense } from "react";
 
 export default function PurchasesPage() {
     return (
-        <div className="container my-4">
+        <div className="container my-8">
             <PageHeader title={'Purchases'} />
             <Suspense fallback={<UserPurchasesTableSkeleton />}>
                 <SuspenseBoundary />
@@ -16,7 +16,7 @@ export default function PurchasesPage() {
         </div>
     );
 }
- async function SuspenseBoundary() {
+async function SuspenseBoundary() {
     const { userId, redirectToSignIn } = await getCurrentUser();
     if (!userId) return redirectToSignIn();
     const Purchases = await getPurchases(userId);
@@ -24,15 +24,9 @@ export default function PurchasesPage() {
     else return <UserPurchasesTable Purchases={Purchases} />
 
 }
- async function getPurchases(userId: string) {
+async function getPurchases(userId: string) {
     return await db.query.PurchaseTable.findMany({
-        columns: {
-            id: true,
-            pricePaidInCents: true,
-            productDetails: true,
-            refundedAt: true,
-            createdAt: true
-        },
+        columns: { id: true, pricePaidInCents: true, productDetails: true, refundedAt: true, createdAt: true },
         where: eq(PurchaseTable.userId, userId),
         orderBy: desc(PurchaseTable.createdAt)
     })

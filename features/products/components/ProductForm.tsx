@@ -4,9 +4,6 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { RequiredLabelIcon } from "@/components/RequiredLabelIcon";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { actionToast } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
 import { productSchema } from "../schema/products";
@@ -16,8 +13,12 @@ import { Button } from "@heroui/button";
 import ImageUpload from "@/components/ImageUpload";
 import { Select, SelectedItems, SelectItem } from "@heroui/select";
 import { Chip } from "@heroui/chip";
+import { Input, Textarea } from "@heroui/input";
+import { NumberInput } from "@heroui/number-input";
+import { useTransition } from "react";
 export function ProductForm({ product, courses }: {
-    product?: { id: string,
+    product?: {
+        id: string,
         name: string,
         description: string,
         imageUrl: string,
@@ -30,6 +31,8 @@ export function ProductForm({ product, courses }: {
     courses: { id: string, name: string }[]
 }) {
     const router = useRouter()
+    const [isPending, startTransition] = useTransition();
+
     const form = useForm<z.infer<typeof productSchema>>({
         resolver: zodResolver(productSchema),
         defaultValues: product ?? {
@@ -43,10 +46,13 @@ export function ProductForm({ product, courses }: {
     })
     async function onSubmit(values: z.infer<typeof productSchema>) {
         const action = product == null ? createProductAction : updateProductAction.bind(null, product.id)
-        const result = await action(values)
-        if (result.error === false)
-            router.refresh()
-        actionToast({ toastData: result });
+        startTransition(async () => {
+            const result = await action(values)
+            if (result.error === false)
+                router.refresh()
+            actionToast({ toastData: result });
+
+        });
     }
     return (
         <div>
@@ -56,10 +62,10 @@ export function ProductForm({ product, courses }: {
                         <FormField control={form.control} name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Name</FormLabel>
-                                    <RequiredLabelIcon />
                                     <FormControl>
-                                        <Input {...field} className="border-gray-300 rounded-md" />
+                                        <Input variant="bordered" radius="sm" label='Name'
+                                            placeholder="Enter Product Name" isRequired labelPlacement="outside"
+                                            {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -68,12 +74,14 @@ export function ProductForm({ product, courses }: {
                         <FormField control={form.control} name="priceInDollars"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Price</FormLabel>
-                                    <RequiredLabelIcon />
                                     <FormControl>
-                                        <Input type="number" step={1} min={0}{...field}
-                                            onChange={(e) => field.onChange(isNaN(e.target.valueAsNumber) ? "" : e.target.valueAsNumber)}
-                                            className="border-gray-300 rounded-md" />
+                                        <NumberInput formatOptions={{
+                                            style: "currency",
+                                            currency: "USD",
+                                        }} {...field} variant="bordered" radius="sm" label="Price" labelPlacement="outside"
+                                            onValueChange={(value) => field.onChange(value)} value={field.value}
+                                            step={1} min={0} />
+
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -116,7 +124,7 @@ export function ProductForm({ product, courses }: {
                                         selectionMode="multiple"
                                         renderValue={(items: SelectedItems<string[]>) => {
                                             return (
-                                                <div className="flex flex-wrap gap-2">
+                                                <div className="flex  gap-2">
                                                     {items.map((item) => (
                                                         <Chip key={item.key} radius="sm">
                                                             {item?.textValue}</Chip>
@@ -139,7 +147,6 @@ export function ProductForm({ product, courses }: {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Image</FormLabel>
-                                    <RequiredLabelIcon />
                                     <FormControl>
                                         <ImageUpload onUpload={field.onChange} value={field.value} />
                                     </FormControl>
@@ -152,9 +159,9 @@ export function ProductForm({ product, courses }: {
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Description</FormLabel>
-                                <RequiredLabelIcon />
                                 <FormControl>
-                                    <Textarea className="min-h-20 resize-none border-gray-300 rounded-md" {...field} />
+                                    <Textarea variant="bordered" radius="sm" label='Description'
+                                        placeholder="Enter Lesson Name" isRequired labelPlacement="outside" {...field} value={field.value ?? ''} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -162,7 +169,8 @@ export function ProductForm({ product, courses }: {
                     />
                     <hr className="my-4" />
                     <div className="self-end">
-                        <Button variant="bordered" radius="sm" disabled={form.formState.isSubmitting} type="submit">{product == null ? "Create" : "Update"} Product</Button>
+                        <Button variant="bordered" isLoading={isPending} radius="sm"
+                            disabled={form.formState.isSubmitting} type="submit">{product == null ? "Create" : "Update"} Product</Button>
                     </div>
                 </form>
             </Form>

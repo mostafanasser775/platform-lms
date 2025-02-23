@@ -7,20 +7,19 @@ import { CSS } from "@dnd-kit/utilities"
 import { cn } from "@/lib/utils"
 import { GripVerticalIcon } from "lucide-react"
 import { actionToast } from "./ui/toast"
+import { useRouter } from "next/navigation"
 
 export function SortableList<T extends { id: string }>({
     items, onOrderChange, children, }: {
         items: T[]
-        onOrderChange: (
-            newOrder: string[]
-        ) => Promise<{ error: boolean; message: string }>
+        onOrderChange: (newOrder: string[]) => Promise<{ error: boolean; message: string }>
         children: (items: T[]) => ReactNode
     }) {
     const dndContextId = useId()
     const [optimisticItems, setOptimisticItems] = useState(items)
     const [, startTransition] = useTransition()
 
-    
+    const router = useRouter()
     async function handleDragEnd(event: DragEndEvent) {
         const { active, over } = event
         const activeId = active.id.toString()
@@ -39,8 +38,13 @@ export function SortableList<T extends { id: string }>({
             const actionData = await onOrderChange(newOrder.map(s => s.id))
             actionToast({ toastData: actionData })
         })
+        startTransition(async () => {
+            router.refresh()
 
-      
+        })
+
+
+
     }
 
     return (

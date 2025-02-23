@@ -1,7 +1,5 @@
 import { PageHeader } from "@/components/PageHeader";
-import { Button } from "@/components/ui/button";
 import { db } from "@/drizzle/db";
-import Link from "next/link";
 import {
     LessonTable,
     ProductTable as DBProductTable,
@@ -10,15 +8,16 @@ import {
 } from "@/drizzle/schema";
 import { eq, asc, countDistinct } from "drizzle-orm";
 import { ProductTable } from "@/features/products/components/ProductTable";
+import { TransationLinkBtn } from "@/components/TransationLinkBtn";
+import { PlusIcon } from "lucide-react";
 export default async function productsPage() {
     const products = await getProducts()
     return (
-        <div className="container my-6">
+        <div >
             <PageHeader title={'Products'}>
-                <Button asChild>
-                    <Link href={'/admin/products/new'}>Add Product</Link>
-                </Button>
+                <TransationLinkBtn icon={<PlusIcon size={20}/>} title="Add Product" link={'/admin/products/new'} variant="solid" color="primary" />
             </PageHeader>
+            <hr className="my-4" />
             <ProductTable products={products} />
         </div>
     );

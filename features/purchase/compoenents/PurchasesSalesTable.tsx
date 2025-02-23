@@ -1,9 +1,10 @@
+'use client'
 import { ActionButton } from "@/components/ActionButton"
-import { Badge } from "@/components/ui/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatDate, formatPlural } from "@/lib/formatters"
 import Image from "next/image"
 import { refundPurchase } from "../actions/purchase"
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/table"
+import { Chip } from "@heroui/chip"
 
 export default function PurchasesSalesTable(
     { Purchases }: {
@@ -19,14 +20,12 @@ export default function PurchasesSalesTable(
 ) {
     return (
         <div>
-            <Table>
+            <Table aria-label="Example static collection table"  selectionMode="single"  removeWrapper>
                 <TableHeader>
-                    <TableRow>
-                        <TableHead>{formatPlural(Purchases.length, { singular: "sale", plural: "sales" })}</TableHead>
-                        <TableHead>Customer Name</TableHead>
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Actions</TableHead>
-                    </TableRow>
+                    <TableColumn>{formatPlural(Purchases.length, { singular: "sale", plural: "sales" })}</TableColumn>
+                    <TableColumn>Customer Name</TableColumn>
+                    <TableColumn>Amount</TableColumn>
+                    <TableColumn>Actions</TableColumn>
                 </TableHeader>
                 <TableBody>
                     {Purchases && Purchases.map((purchase) => (
@@ -47,16 +46,14 @@ export default function PurchasesSalesTable(
                             </TableCell>
                             <TableCell>{purchase.user.name}</TableCell>
                             <TableCell>{purchase.refundedAt ?
-                                <Badge variant="destructive">Refunded</Badge>
+                                <Chip color="danger">Refunded</Chip>
                                 :
-                                <Badge variant="default">${(purchase.pricePaidInCents / 100).toFixed(2)}</Badge>
+                                <Chip color="default">${(purchase.pricePaidInCents / 100).toFixed(2)}</Chip>
                             }
                             </TableCell>
                             <TableCell>
                                 {purchase.refundedAt === null && purchase.pricePaidInCents > 0}
-                                <ActionButton action={refundPurchase.bind(null, purchase.id)} variant={"destructive"} requireAreYouSure>
-                                    Refund 
-                                </ActionButton>
+                                <ActionButton title="Refund" action={refundPurchase.bind(null, purchase.id)} />
                             </TableCell>
                         </TableRow>
 
@@ -73,11 +70,10 @@ export function UserPurchasesTableSkeleton() {
         <div>
             <Table>
                 <TableHeader>
-                    <TableRow>
-                        <TableHead>Product</TableHead>
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Actions</TableHead>
-                    </TableRow>
+                    <TableColumn>Product</TableColumn>
+                    <TableColumn>Customer Name</TableColumn>
+                    <TableColumn>Amount</TableColumn>
+                    <TableColumn>Actions</TableColumn>
                 </TableHeader>
                 <TableBody>
                     <TableRow>
@@ -89,6 +85,9 @@ export function UserPurchasesTableSkeleton() {
                                     <div className="h-4 w-[200px] rounded-full bg-muted" />
                                 </div>
                             </div>
+                        </TableCell>
+                        <TableCell>
+                            <div className="h-4 w-[200px] rounded-full bg-muted" />
                         </TableCell>
                         <TableCell>
                             <div className="h-4 w-[200px] rounded-full bg-muted" />

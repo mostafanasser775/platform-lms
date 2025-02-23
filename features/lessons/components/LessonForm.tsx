@@ -13,11 +13,12 @@ import { Button } from "@heroui/button";
 import { X } from "lucide-react";
 import { Input, Textarea } from "@heroui/input";
 import { Select, SelectItem } from "@heroui/select";
-export function LessonForm({ sections, defaultSectionId, lesson, onSuccess }:
-    {   sections: { id: string, name: string, }[],
-        defaultSectionId?: string,
-        onSuccess?: () => void,
-        lesson?: { id: string, name: string, status: LessonStatus, youtubeVideoId: string, videoUrl: string, description: string | null, sectionId: string }
+import { useTransition } from "react";
+export function LessonForm({ sections, defaultSectionId, lesson, onSuccess ,onOpenChange}:
+    {
+        sections: { id: string, name: string, }[], defaultSectionId?: string, onSuccess?: () => void,
+        lesson?: { id: string, name: string, status: LessonStatus, youtubeVideoId: string, videoUrl: string, description: string | null, sectionId: string },
+        onOpenChange: () => void
     }) {
     const router = useRouter()
     const form = useForm<z.infer<typeof lessonSchema>>({
@@ -31,15 +32,19 @@ export function LessonForm({ sections, defaultSectionId, lesson, onSuccess }:
             sectionId: lesson?.sectionId ?? defaultSectionId ?? sections[0]?.id ?? ''
         },
     })
+    const [isPending, startTransition] = useTransition();
 
     async function onSubmit(values: z.infer<typeof lessonSchema>) {
         const action = lesson == null ? createLessonAction : updateLessonAction.bind(null, lesson.id, values)
+        startTransition(async () => {
+            const result = await action(values)
+            if (result.error === false)
+                router.refresh()
+            actionToast({ toastData: result });
+            if (!result.error) onSuccess?.()
 
-        const result = await action(values)
-        if (result.error === false)
-            router.refresh()
-        actionToast({ toastData: result });
-        if (!result.error) onSuccess?.()
+        });
+
     }
 
     return (
@@ -60,27 +65,6 @@ export function LessonForm({ sections, defaultSectionId, lesson, onSuccess }:
                     />
                     <div className="grid grid-cols-1 @lg:grid-cols-2 gap-6">
 
-
-                        {/* <FormField control={form.control} name="sectionId"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value} {...field}>
-                                        <FormControl>
-                                            <SelectTrigger className="border-gray-300 rounded-md">
-                                                <SelectValue />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {sections.map(section =>
-                                                <SelectItem key={section.id} value={section.id}>{section.name}</SelectItem>
-                                            )}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        /> */}
-
                         <FormField control={form.control} name="sectionId"
                             render={({ field }) => (
                                 <FormItem>
@@ -98,13 +82,6 @@ export function LessonForm({ sections, defaultSectionId, lesson, onSuccess }:
                                 </FormItem>
                             )}
                         />
-
-
-
-
-
-
-
 
                         <FormField control={form.control} name="status"
                             render={({ field }) => (
@@ -139,9 +116,7 @@ export function LessonForm({ sections, defaultSectionId, lesson, onSuccess }:
                     />
 
                     {!form.getValues('videoUrl') ?
-                        <FormField
-                            control={form.control}
-                            name="videoUrl"
+                        <FormField control={form.control} name="videoUrl"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Upload Video</FormLabel>
@@ -167,10 +142,11 @@ export function LessonForm({ sections, defaultSectionId, lesson, onSuccess }:
                         </div>
                     }
 
-                    <div className="self-end">
-                        <Button disabled={form.formState.isSubmitting} type="submit">Save</Button>
+                    <div className="self-end flex gap-x-4">
+                        <Button onPress={() => onOpenChange()}>Close</Button>
+                        <Button isLoading={isPending} isDisabled={isPending} color="primary" disabled={form.formState.isSubmitting}
+                            type="submit">Save</Button>
                     </div>
-                    {/* {videoId && <YouTubeVideoPlayer videoId={videoId} />} */}
                 </form>
             </Form>
         </div>

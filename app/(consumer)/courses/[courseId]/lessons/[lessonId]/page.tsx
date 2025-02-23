@@ -1,16 +1,15 @@
-import { ActionButton } from "@/components/ActionButton";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { db } from "@/drizzle/db";
 import { CourseSectionTable, LessonStatus, LessonTable, UserLessonCompleteTable } from "@/drizzle/schema";
-import { updateLessonCompleteStatus } from "@/features/lessons/actions/updateLessonStatusComplete";
 import { canViewLesson } from "@/features/lessons/permissions/lessons";
 import { getCurrentUser } from "@/services/clerk";
 import { Button } from "@heroui/button";
 import { and, asc, desc, eq, gt, lt, or } from "drizzle-orm";
-import { CheckSquare2Icon, LockIcon, XSquareIcon } from "lucide-react";
+import { LockIcon } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ReactNode, Suspense } from "react";
+import { CompleteBtn } from "./CompleteBtn";
 
 export default async function LessonPage({ params }: { params: Promise<{ courseId: string, lessonId: string }> }) {
     const { courseId, lessonId } = await params
@@ -18,7 +17,7 @@ export default async function LessonPage({ params }: { params: Promise<{ courseI
     if (Lesson == null || courseId == null) return notFound()
 
     return (
-        <div className="container my-4">
+        <div className="container my-8">
             <Suspense fallback={<div>...</div>}>
                 <SuspenseBoundary lesson={Lesson} courseId={courseId} />
             </Suspense>
@@ -30,8 +29,7 @@ async function SuspenseBoundary({ lesson, courseId }: {
     courseId: string
 }) {
     const { userId, role } = await getCurrentUser();
-    const isLessonComplete = userId == null ? false :
-        await getIsLessonComplete({ lessonId: lesson.id, userId })
+    const isLessonComplete = userId == null ? false : await getIsLessonComplete({ lessonId: lesson.id, userId })
 
     const canView = await canViewLesson({ role, userId }, lesson)
 
@@ -58,15 +56,11 @@ async function SuspenseBoundary({ lesson, courseId }: {
                                 Previous
                             </ToLessonButton>
                         </Suspense>
-                        <ActionButton action={updateLessonCompleteStatus.bind(null, lesson.id, !isLessonComplete)}>
-                            {isLessonComplete ? (
-                                <div className="flex items-center">
-                                    <CheckSquare2Icon /><span className="ml-2">Mark Incomplete</span>
-                                </div>
-                            ) : (
-                                <div className="flex"><XSquareIcon /> <span className="ml-2">Mark Complete</span></div>
-                            )}
-                        </ActionButton>
+                        <CompleteBtn lessonId={lesson.id} isLessonComplete={isLessonComplete} />
+                        {/* <Button onPress={updateLessonCompleteStatus.bind(null, lesson.id, !isLessonComplete)}
+                            startContent={isLessonComplete ? <CheckSquare2Icon size={20} /> : <XSquareIcon size={20} />}>
+                            {isLessonComplete ? "Mark Incomplete" : "Mark Complete"}
+                        </Button> */}
                         <Suspense fallback={<Button isLoading />}>
                             <ToLessonButton lesson={lesson} courseId={courseId} lessonFunc={getNextLesson}>
                                 Next
@@ -175,9 +169,5 @@ async function ToLessonButton({ children, courseId, lessonFunc, lesson, }: {
     const toLesson = await lessonFunc(lesson)
     if (toLesson == null) return null
 
-    return (
-        <Button variant="bordered" as={Link} href={`/courses/${courseId}/lessons/${toLesson.id}`}>
-            {children}
-        </Button>
-    )
+    return (<Button variant="bordered" as={Link} href={`/courses/${courseId}/lessons/${toLesson.id}`}>{children}</Button>)
 }

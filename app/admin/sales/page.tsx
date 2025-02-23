@@ -7,8 +7,9 @@ import { desc } from "drizzle-orm"
 export default async function SalesPurcahsePage() {
     const purchases = await getPurchases()
     return (
-        <div className="container my-4">
+        <div >
             <PageHeader title="Sales" />
+            <hr className="my-4"/>
             <PurchasesSalesTable Purchases={purchases} />
 
         </div>

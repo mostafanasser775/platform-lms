@@ -1,3 +1,4 @@
+'use server'
 import { db } from "@/drizzle/db";
 import { UserTable } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
@@ -32,7 +33,7 @@ export async function deleteUser({ clerkUserId }: { clerkUserId: string }) {
             deletedAt: new Date(),
             email: "deleted@email.com",
             name: "deleted",
-            clerkUserId:'deleted',
+            clerkUserId: 'deleted',
             imageUrl: null
         })
         .where(eq(UserTable.clerkUserId, clerkUserId))
@@ -42,4 +43,23 @@ export async function deleteUser({ clerkUserId }: { clerkUserId: string }) {
         return deletedUser
     }
     throw new Error("can not delete user");
+}
+export async function deleteuserAction(clerkUserId: string) {
+    const [deletedUser] = await db.update(UserTable)
+        .set({
+            deletedAt: new Date(),
+            email: "deleted@email.com",
+            name: "deleted",
+            clerkUserId: 'deleted',
+            imageUrl: null
+        })
+        .where(eq(UserTable.clerkUserId, clerkUserId))
+        .returning()
+
+    if (deletedUser) {
+        return { error: false, message: "Successfully deleted User" }
+    }
+    return { error: true, message: "Failed to delete the user" }
+
+
 }

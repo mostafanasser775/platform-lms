@@ -52,7 +52,7 @@ export function CourseForm({ course }: { course?: { id: string, name: string, de
                     <FormField control={form.control} name="description"
                         render={({ field }) => (
                             <FormItem>
-                                <FormControl><Textarea
+                                <FormControl><Textarea radius="sm"
                                     variant="bordered" isRequired label='Description' 
                                      labelPlacement="outside" placeholder="Enter Course Description"
 
@@ -65,7 +65,7 @@ export function CourseForm({ course }: { course?: { id: string, name: string, de
                     />
                     <hr />
                     <div className="self-end">
-                        <Button disabled={form.formState.isSubmitting} type="submit" isLoading={isPending}>Save</Button>
+                        <Button disabled={form.formState.isSubmitting} radius="sm" type="submit" isLoading={isPending}>Save</Button>
                     </div>
                 </form>
             </Form>

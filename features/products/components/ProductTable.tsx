@@ -1,14 +1,13 @@
 'use client'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatPlural } from "@/lib/formatters";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { EyeIcon, LockIcon, Trash2Icon } from "lucide-react";
+import { EyeIcon, LockIcon } from "lucide-react";
 import { ActionButton } from "@/components/ActionButton";
 import { ProdcutStatus } from "@/drizzle/schema";
 import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
 import { deleteProductAction } from "../actions/product";
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/table";
+import { TransationLinkBtn } from "@/components/TransationLinkBtn";
+import { Chip } from "@heroui/chip";
 export function ProductTable({ products }: {
     products: {
         id: string,
@@ -22,20 +21,18 @@ export function ProductTable({ products }: {
     }[]
 }) {
     return (
-        <div className=" ">
-            <Table>
+        <div>
+            <Table aria-label="Example static collection table" removeWrapper selectionMode="single">
                 <TableHeader>
-                    <TableRow>
-                        <TableHead>
-                            {formatPlural(products.length, {
-                                singular: "product",
-                                plural: "products",
-                            })}
-                        </TableHead>
-                        <TableHead>Customers</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead>Actions</TableHead>
-                    </TableRow>
+                    <TableColumn>
+                        {formatPlural(products.length, {
+                            singular: "product",
+                            plural: "products",
+                        })}
+                    </TableColumn>
+                    <TableColumn>Customers</TableColumn>
+                    <TableColumn>Status</TableColumn>
+                    <TableColumn>Actions</TableColumn>
                 </TableHeader>
                 <TableBody>
                     {products && products.map((product) => (
@@ -56,19 +53,18 @@ export function ProductTable({ products }: {
                             </TableCell>
                             <TableCell>{product.customersCount}</TableCell>
                             <TableCell>
-                                <Badge className="py-2 gap-x-2 ">
-                                    <div>{getStatusIcon(product.status)}</div>
-                                    <div> {product.status}</div>
-                                </Badge>
+                                <Chip >
+                                    <div className="flex gap-x-2 items-center">
+                                        <div>{getStatusIcon(product.status)}</div>
+                                        <div> {product.status}</div>
+                                    </div>
+
+                                </Chip>
                             </TableCell>
                             <TableCell>
                                 <div className="flex gap-2">
-                                    <Button asChild ><Link href={`/admin/products/${product.id}/edit`}>Edit</Link></Button>
-                                    <ActionButton variant={'destructive'} requireAreYouSure
-                                        action={deleteProductAction.bind(null, product.id)}>
-                                        <Trash2Icon />
-                                        <span className="sr-only">Delete</span>
-                                    </ActionButton>
+                                    <TransationLinkBtn title="Edit" link={`/admin/products/${product.id}/edit`} variant={"flat"} color={"default"} />
+                                    <ActionButton title="Delete" action={deleteProductAction.bind(null, product.id)} />
                                 </div>
                             </TableCell>
                         </TableRow>

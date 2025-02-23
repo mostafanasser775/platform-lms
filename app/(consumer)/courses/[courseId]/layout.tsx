@@ -27,7 +27,7 @@ export default async function CourseLayoutPage({ params, children }: { params: P
 
     </div>;
 }
- async function SuspenseBoundary({ course }: {
+async function SuspenseBoundary({ course }: {
     course: {
         id: string,
         name: string,
@@ -46,7 +46,7 @@ export default async function CourseLayoutPage({ params, children }: { params: P
     const { userId } = await getCurrentUser();
     const completedLessonsIds = userId == null ? [] : await getCompletedLessonsIds(userId)
     return (
-        <CoursePageClient course={mapCourse(course, completedLessonsIds)}/>
+        <CoursePageClient course={mapCourse(course, completedLessonsIds)} />
     )
 }
 async function getCompletedLessonsIds(userId: string) {
@@ -83,32 +83,28 @@ async function GetCourse(id: string) {
 
 function mapCourse(
     course: {
-      name: string
-      id: string
-      courseSections: {
-        name: string
-        id: string
-        lessons: {
-          name: string
-          id: string
+        name: string, id: string
+        courseSections: {
+            name: string, id: string
+            lessons: {
+                name: string, id: string
+            }[]
         }[]
-      }[]
     },
     completedLessonIds: string[]
-  ) {
+) {
     return {
-      ...course,
-      courseSections: course.courseSections.map(section => {
-        return {
-          ...section,
-          lessons: section.lessons.map(lesson => {
+        ...course,
+        courseSections: course.courseSections.map(section => {
             return {
-              ...lesson,
-              isComplete: completedLessonIds.includes(lesson.id),
+                ...section,
+                lessons: section.lessons.map(lesson => {
+                    return {
+                        ...lesson,
+                        isComplete: completedLessonIds.includes(lesson.id),
+                    }
+                }),
             }
-          }),
-        }
-      }),
+        }),
     }
-  }
-  
+}

@@ -1,19 +1,20 @@
 import { PageHeader } from "@/components/PageHeader";
 import { db } from "@/drizzle/db";
 import { CourseTable } from "@/features/courses/components/CourseTable";
-import Link from "next/link";
 import { CourseSectionTable, CourseTable as DBCourseTable, LessonTable, UserCourseAccessTable } from "@/drizzle/schema";
 import { countDistinct, eq, asc } from "drizzle-orm";
-import { Button } from "@heroui/button";
+
+import { TransationLinkBtn } from "@/components/TransationLinkBtn";
+import { PlusIcon } from "lucide-react";
 export default async function CoursesPage() {
     const courses = await getCourses()
     return (
         <div >
             <PageHeader title={'Courses'}>
-                <Button as={Link} href={'/admin/courses/new'} radius="sm" color="primary">Add Course</Button>
+                <TransationLinkBtn icon={<PlusIcon size={20}/>} variant="solid" color="primary" link="/admin/courses/new" title="Add Course"/>
             </PageHeader>
-            <hr className="my-4"/>
-            
+            <hr className="my-4" />
+
             <CourseTable courses={courses} />
         </div>
     );

@@ -2,10 +2,11 @@
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { ReactNode, Suspense, useState } from "react";
-import { BookOpen, LayoutDashboard, Menu, Package, ShoppingBag, X, Settings, Users } from "lucide-react";
+import { BookOpen, LayoutDashboard, Menu, Package, ShoppingBag, X, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { ToastProvider } from "@heroui/toast";
+import Image from "next/image";
 export function AdminWrapperLayout({ children }: { children: ReactNode }) {
     return (
         <div className="flex">
@@ -52,7 +53,6 @@ const menuItems = [
     { name: 'Sales', href: '/admin/sales', icon: ShoppingBag },
     { name: 'Products', href: '/admin/products', icon: Package },
     { name: 'Users', href: '/admin/users', icon: Users },
-    { name: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
 function Sidebar() {
@@ -65,7 +65,7 @@ function Sidebar() {
         )}>
             {/* Sidebar Header */}
             <div className="border-b p-4 flex items-center justify-between border-gray-300">
-                {isOpen && <Link href="/admin" className="font-bold text-xl hidden md:block">EduNexus</Link>}
+                {isOpen && <Link href="/admin" className="font-bold text-xl hidden md:block"><Image height={225} width={1024} alt='logo' src={'/images/logo.webp'}/></Link>}
                 <button onClick={() => setIsOpen(!isOpen)} className="p-2 rounded-md focus:outline-none">
                     {isOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>

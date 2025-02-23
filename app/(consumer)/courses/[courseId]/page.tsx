@@ -9,7 +9,7 @@ export default async function CoursePage({ params }: { params: Promise<{ courseI
     const course = await getCourse(courseId)
     if (course == null) return notFound()
     return (
-        <div className="container my-4">
+        <div className="container my-8">
             <PageHeader title={course.name}/>
             <p className="text-muted-foreground">
                 {course.description}

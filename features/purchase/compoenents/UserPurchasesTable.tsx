@@ -1,7 +1,9 @@
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+
+'use client'
 import { formatDate } from "@/lib/formatters"
+import { Badge } from "@heroui/badge"
+import { Button } from "@heroui/button"
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/table"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -18,20 +20,18 @@ export default function UserPurchasesTable(
 ) {
     return (
         <div>
-            <Table>
+            <Table  aria-label="Example static collection table"  selectionMode="single" >
                 <TableHeader>
-                    <TableRow>
-                        <TableHead>Product</TableHead>
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Actions</TableHead>
-                    </TableRow>
+                    <TableColumn>Product</TableColumn>
+                    <TableColumn>Amount</TableColumn>
+                    <TableColumn>Actions</TableColumn>
                 </TableHeader>
                 <TableBody>
                     {Purchases && Purchases.map((purchase) => (
                         <TableRow key={purchase.id}>
                             <TableCell>
                                 <div className="flex items-center gap-4 ">
-                                    <Image src={purchase.productDetails.imageUrl} className="size-12 object-cover rounded-lg "
+                                    <Image src={purchase.productDetails.imageUrl} className="size-16 object-cover rounded-lg "
                                         alt={purchase.productDetails.name} width={192} height={192} />
                                     <div className="flex flex-col gap-1">
                                         <div className="font-semibold">
@@ -44,14 +44,14 @@ export default function UserPurchasesTable(
                                 </div>
                             </TableCell>
                             <TableCell>{purchase.refundedAt ?
-                                <Badge variant="destructive">Refunded</Badge>
+                                <Badge >Refunded</Badge>
                                 :
-                                <Badge variant="default">${(purchase.pricePaidInCents / 100).toFixed(2)}</Badge>
+                                <Badge >${(purchase.pricePaidInCents / 100).toFixed(2)}</Badge>
                             }
                             </TableCell>
                             <TableCell>
-                                <Button asChild variant="outline">
-                                    <Link href={`/purchases/${purchase.id}`}>Details</Link>
+                                <Button as={Link} href={`/purchases/${purchase.id}`} variant="bordered">
+                                    Details
                                 </Button>
                             </TableCell>
                         </TableRow>
@@ -69,11 +69,9 @@ export function UserPurchasesTableSkeleton() {
         <div>
             <Table>
                 <TableHeader>
-                    <TableRow>
-                        <TableHead>Product</TableHead>
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Actions</TableHead>
-                    </TableRow>
+                    <TableColumn>Product</TableColumn>
+                    <TableColumn>Amount</TableColumn>
+                    <TableColumn>Actions</TableColumn>
                 </TableHeader>
                 <TableBody>
                     <TableRow>

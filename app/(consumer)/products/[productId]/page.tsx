@@ -1,5 +1,4 @@
 import { SkeltonButton } from "@/components/SkeltonButton";
-import { Button } from "@/components/ui/button";
 import { db } from "@/drizzle/db";
 import { CourseSectionTable, LessonTable, ProductTable } from "@/drizzle/schema";
 import { userOwnsProductDB } from "@/features/products/db/product";
@@ -15,10 +14,7 @@ import Image from "next/image";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { VideoIcon } from "lucide-react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
-
-interface PurchesButtonProps {
-    productId: string;
-}
+import { Button } from "@heroui/button";
 
 interface ProductPageProps {
     params: Promise<{ productId: string }>;
@@ -33,7 +29,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     const lessonCount = sumArray(Product.courses, course =>
         sumArray(course.courseSections, s => s.lessons.length)
     );
-    
+
     return (
         <div className="container mx-auto py-8 px-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -48,9 +44,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                         {formatPlural(course.courseSections.length, {
                                             singular: "section", plural: "sections",
                                         }) + " . " +
-                                        formatPlural(sumArray(course.courseSections, s => s.lessons.length), {
-                                            singular: "lesson", plural: "lessons",
-                                        })}
+                                            formatPlural(sumArray(course.courseSections, s => s.lessons.length), {
+                                                singular: "lesson", plural: "lessons",
+                                            })}
                                     </div>
                                 </div>
                             </CardHeader>
@@ -75,9 +71,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                                 {section.lessons.map(lesson => (
                                                     <div key={lesson.id} className="flex items-center text-base gap-2 text-gray-700 py-2">
                                                         <VideoIcon className="text-accent" />
-                                                        {lesson.status === "preview" ? 
+                                                        {lesson.status === "preview" ?
                                                             <Link href={`/courses/${course.id}/lessons/${lesson.id}`} className="text-accent hover:underline">{lesson.name}</Link>
-                                                            : 
+                                                            :
                                                             <span>{lesson.name}</span>
                                                         }
                                                     </div>
@@ -101,14 +97,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
                             <div className="flex flex-col items-start space-y-4">
                                 <div className="text-xl text-gray-800 font-semibold">{formatPrice(Product.priceInDollars)}</div>
                                 <h1 className="text-3xl font-bold text-gray-900">{Product.name}</h1>
-                              
+
                                 <Suspense fallback={<SkeltonButton className="h-12 w-36" />} >
                                     <PurchesButton productId={Product.id} />
                                 </Suspense>
                                 <p className="text-base text-gray-700">Description : {Product.description}</p>
 
                                 <div className="flex font-semibold  gap-2 text-gray-700 text-small">
-                                    Content : 
+                                    Content :
                                     <span className="text-gray-500 font-normal">{formatPlural(courseCount, {
                                         singular: "course",
                                         plural: "courses",
@@ -118,7 +114,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                                     })}</span>
                                 </div>
 
-                               
+
                             </div>
                         </CardBody>
                     </Card>
@@ -128,15 +124,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
     );
 }
 
-async function PurchesButton({ productId }: PurchesButtonProps) {
+async function PurchesButton({ productId }: { productId: string }) {
     const { userId } = await getCurrentUser();
     const alreadyOwnProduct = userId !== undefined ? await userOwnsProductDB({ userId, productId }) : false;
-    if (alreadyOwnProduct) return <div className="w-full h-12 bg-slate-600 animate-pulse rounded-lg">
-        You already own this product
-    </div>;
+    if (alreadyOwnProduct)
+        return (
+            <Button as={Link} href="/courses" variant="solid" color="success">
+                You own this Course
+            </Button>
+        )
     return (
-        <Button className="bg-primary text-white text-lg py-3 px-6 rounded-lg hover:bg-primary-dark transition">
-            <Link href={`/products/${productId}/purchase`}>Get Now</Link>
+        <Button as={Link} href={`/products/${productId}/purchase`} color="primary">
+            Get Now
         </Button>
     );
 }

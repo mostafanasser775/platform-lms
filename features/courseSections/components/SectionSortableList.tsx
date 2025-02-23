@@ -1,7 +1,7 @@
 "use client"
 import { CourseSectionStatus } from "@/drizzle/schema";
 import { cn } from "@/lib/utils";
-import { EyeClosed, Trash2Icon } from "lucide-react";
+import { EyeClosed } from "lucide-react";
 import { ActionButton } from "@/components/ActionButton";
 import { SortableItem, SortableList } from "@/components/SortableList";
 import { deleteSectionAction, updateSectionOrderAction } from "../actions/section";
@@ -24,11 +24,7 @@ export function SortableSectionList({ courseId, sections, }: {
         {(items) => (
           <div className="divide-y border-t">
             {items.map((section) => (
-              <SortableItem
-                key={section.id}
-                id={section.id}
-                className="grid grid-cols-3 items-center p-3 hover:bg-gray-50"
-              >
+              <SortableItem key={section.id} id={section.id} className="grid grid-cols-3 items-center p-3 hover:bg-gray-50">
                 {/* Section Name */}
                 <div className={cn("flex items-center gap-2", section.status === "private" && "text-muted-foreground")}>
                   {section.status === "private" && <EyeClosed className="size-4" />}
@@ -38,15 +34,7 @@ export function SortableSectionList({ courseId, sections, }: {
                 {/* Actions */}
                 <div className="flex justify-end col-span-2 gap-x-4 items-center">
                   <SectionModal section={section} courseId={courseId} />
-                  <ActionButton
-                    action={deleteSectionAction.bind(null, section.id)}
-                    requireAreYouSure
-                    variant="destructive"
-                    size="sm"
-                  >
-                    <Trash2Icon />
-                    <span className="sr-only">Delete</span>
-                  </ActionButton>
+                  <ActionButton action={deleteSectionAction.bind(null, section.id)} />
                 </div>
               </SortableItem>
             ))}
