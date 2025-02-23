@@ -1,8 +1,6 @@
 "use client"
 
-import {
-  EmbeddedCheckoutProvider,
-  EmbeddedCheckout,
+import { EmbeddedCheckoutProvider,EmbeddedCheckout,
 } from "@stripe/react-stripe-js"
 import { stripeClientPromise } from "../stripeClient"
 import { getClientSessionSecret } from "../actions/stripe"
