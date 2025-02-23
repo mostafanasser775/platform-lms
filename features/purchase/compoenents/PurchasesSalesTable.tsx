@@ -5,6 +5,7 @@ import Image from "next/image"
 import { refundPurchase } from "../actions/purchase"
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/table"
 import { Chip } from "@heroui/chip"
+import { Button } from "@heroui/button"
 
 export default function PurchasesSalesTable(
     { Purchases }: {
@@ -20,7 +21,7 @@ export default function PurchasesSalesTable(
 ) {
     return (
         <div>
-            <Table aria-label="Example static collection table"  selectionMode="single"  removeWrapper>
+            <Table aria-label="Example static collection table" selectionMode="single" removeWrapper>
                 <TableHeader>
                     <TableColumn>{formatPlural(Purchases.length, { singular: "sale", plural: "sales" })}</TableColumn>
                     <TableColumn>Customer Name</TableColumn>
@@ -52,8 +53,13 @@ export default function PurchasesSalesTable(
                             }
                             </TableCell>
                             <TableCell>
-                                {purchase.refundedAt === null && purchase.pricePaidInCents > 0}
-                                <ActionButton title="Refund" action={refundPurchase.bind(null, purchase.id)} />
+                                {(purchase.refundedAt === null && purchase.pricePaidInCents > 0) ? (
+
+                                    <ActionButton title="Refund" action={refundPurchase.bind(null, purchase.id)} />
+                                ) : (
+                                    <Button variant="solid" color="warning" isDisabled>Refund</Button>
+                                )}
+
                             </TableCell>
                         </TableRow>
 
