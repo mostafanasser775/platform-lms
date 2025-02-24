@@ -25,7 +25,7 @@ The **LMS Platform** is a full-featured Learning Management System that allows u
 ## Installation & Setup
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/lms-platform.git
+   git clone https://github.com/mostafanasser775/platform-lms.git
    cd lms-platform
    ```
 2. Install dependencies:
