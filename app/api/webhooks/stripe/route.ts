@@ -4,7 +4,9 @@ import { ProductTable, UserTable } from "@/drizzle/schema"
 import { 
     //addUserCourseAccess,
      addUserCourseAccessNew } from "@/features/courses/db/userAccessCourse"
-import { insertPurchaseDB } from "@/features/purchase/db/purchase"
+import {
+ //    insertPurchaseDB,
+      insertPurchaseDBNew } from "@/features/purchase/db/purchase"
 import { stripeServerClient } from "@/services/stripe/stripeServer"
 import { eq } from "drizzle-orm"
 import { redirect } from "next/navigation"
@@ -73,24 +75,31 @@ async function processStripeCheckoutSession(checkOutSession: Stripe.Checkout.Ses
     }
     const courseids = product.courseProducts.map(cp => cp.courseId)
     await addUserCourseAccessNew(userId,courseids)
-    db.transaction(async trx => {
-        try {
-          //  await addUserCourseAccess({ userId: user.id, courseids }, trx)
+    await insertPurchaseDBNew({
+        stripeSessionId: checkOutSession.id,
+        pricePaidInCents: checkOutSession.amount_total || product.priceInDollars * 100,
+        productDetails: product,
+        userId: user.id,
+        productId
+    })
+    // db.transaction(async trx => {
+    //     try {
+    //       //  await addUserCourseAccess({ userId: user.id, courseids }, trx)
            
-            await insertPurchaseDB({
-                stripeSessionId: checkOutSession.id,
-                pricePaidInCents: checkOutSession.amount_total || product.priceInDollars * 100,
-                productDetails: product,
-                userId: user.id,
-                productId
-            }, trx)
+    //         await insertPurchaseDB({
+    //             stripeSessionId: checkOutSession.id,
+    //             pricePaidInCents: checkOutSession.amount_total || product.priceInDollars * 100,
+    //             productDetails: product,
+    //             userId: user.id,
+    //             productId
+    //         }, trx)
 
-        } catch (error) {
-            trx.rollback()
-            throw error
-        }
+    //     } catch (error) {
+    //         trx.rollback()
+    //         throw error
+    //     }
 
-    },)
+    // },)
 
     return productId
 }
