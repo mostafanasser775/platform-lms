@@ -1,7 +1,7 @@
 import { env } from "@/data/env/server"
 import { db } from "@/drizzle/db"
 import { ProductTable, UserTable } from "@/drizzle/schema"
-import { addUserCourseAccess } from "@/features/courses/db/userAccessCourse"
+import { addUserCourseAccess, addUserCourseAccessNew } from "@/features/courses/db/userAccessCourse"
 import { insertPurchaseDB } from "@/features/purchase/db/purchase"
 import { stripeServerClient } from "@/services/stripe/stripeServer"
 import { eq } from "drizzle-orm"
@@ -70,9 +70,11 @@ async function processStripeCheckoutSession(checkOutSession: Stripe.Checkout.Ses
         throw new Error("product or user not found")
     }
     const courseids = product.courseProducts.map(cp => cp.courseId)
-     db.transaction(async trx => {
+    await addUserCourseAccessNew(userId,courseids)
+    db.transaction(async trx => {
         try {
-            await addUserCourseAccess({ userId: user.id, courseids }, trx)
+          //  await addUserCourseAccess({ userId: user.id, courseids }, trx)
+           
             await insertPurchaseDB({
                 stripeSessionId: checkOutSession.id,
                 pricePaidInCents: checkOutSession.amount_total || product.priceInDollars * 100,
@@ -80,6 +82,7 @@ async function processStripeCheckoutSession(checkOutSession: Stripe.Checkout.Ses
                 userId: user.id,
                 productId
             }, trx)
+
         } catch (error) {
             trx.rollback()
             throw error

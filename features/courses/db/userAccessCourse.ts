@@ -9,6 +9,7 @@ export async function addUserCourseAccess({ userId, courseids }: { userId: strin
         .values(courseids.map(courseId => ({ userId, courseId })))
         .onConflictDoNothing()
         .returning()
+
     console.log("access", accesses)
 
 
@@ -48,4 +49,22 @@ export async function revokeUserCourseAccess({ userId, productId }: { userId: st
     const revokedCoursesIds = await trx.delete(UserCourseAccessTable)
         .where(and(eq(UserCourseAccessTable.userId, userId), inArray(UserCourseAccessTable.courseId, removedCoursesIds))).returning();
     return revokedCoursesIds
+}
+
+
+export async function addUserCourseAccessNew(userId: string, courseids: string[]) {
+    for (const courseId of courseids) {
+        console.log("courseId",courseId)
+        console.log("userId",userId)
+        try {
+            await db.insert(UserCourseAccessTable)
+                .values({ userId: userId, courseId: courseId })
+                .onConflictDoNothing()
+                .returning()
+        }
+        catch (error) {
+            console.log(error)
+        }
+
+    }
 }
