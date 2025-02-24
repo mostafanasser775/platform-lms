@@ -123,7 +123,7 @@ async function getTopPurchases() {
         columns: { name: true }
       }
     },
-    limit: 10
+    limit: 8
   })
   return purchases
 }
