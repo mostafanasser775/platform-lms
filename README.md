@@ -1,6 +1,10 @@
 # LMS Platform
 
 ## Overview
+🌐 Live Demo
+
+🚀 Check out the LMS Platform in action:🔗 LMS Platform – Live Demo
+
 The **LMS Platform** is a comprehensive Learning Management System designed to facilitate online education. It allows **users** to browse, purchase, and access courses, while **admins** can manage course content, handle purchases, and process refunds. The platform ensures **scalability, security, and a seamless learning experience**.
 
 ## Features
