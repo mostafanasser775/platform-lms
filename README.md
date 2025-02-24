@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LMS Platform
 
-## Getting Started
+## Overview
+The **LMS Platform** is a full-featured Learning Management System that allows users to browse, purchase, and access courses. Admins can manage courses, handle purchases, and process refunds. The platform is designed for scalability, security, and seamless user experience.
 
-First, run the development server:
+## Features
+- **User Roles:** Admins and users with different permissions.
+- **Course Purchase System:** Users can browse and buy courses; access is granted only after purchase.
+- **Course & Lesson Management:** Courses contain sections, and sections contain lessons with video content.
+- **Video Playback & Progress Tracking:** Users can watch lessons using React-Player, and progress is tracked automatically.
+- **Admin Panel:** Allows course uploads, refunds, and content organization.
+- **Refund System:** Admins can revoke access and process refunds.
+- **Secure Authentication:** User authentication via Clerk.
+- **Responsive UI:** Built with TailwindCSS and HeroUI.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tech Stack
+- **Frontend:** Next.js, React, HeroUI, TailwindCSS
+- **Backend:** Drizzle ORM
+- **Database:** PostgreSQL / MySQL
+- **Authentication:** Clerk
+- **Payments:** Stripe
+- **Media Handling:** Cloudinary (videos), ImageKit (images)
+- **Drag & Drop:** Dnd-Kit
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Installation & Setup
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/yourusername/lms-platform.git
+   cd lms-platform
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Set up environment variables (`.env` file):
+   ```sh
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_key
+   CLERK_SECRET_KEY=your_secret_key
+   STRIPE_SECRET_KEY=your_stripe_key
+   DATABASE_URL=your_database_url
+   CLOUDINARY_URL=your_cloudinary_url
+   IMAGEKIT_PUBLIC_KEY=your_imagekit_key
+   ```
+4. Run the development server:
+   ```sh
+   npm run dev
+   ```
+5. Access the platform at `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
+- Users can **browse courses**, purchase them, and access content.
+- Admins can **upload courses**, manage content, and issue **refunds**.
+- Lessons include **video playback**, and user progress is **tracked automatically**.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contributing
+Contributions are welcome! Feel free to submit a pull request or open an issue.
 
-## Learn More
+## License
+This project is licensed under the MIT License.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
