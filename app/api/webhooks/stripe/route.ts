@@ -1,7 +1,9 @@
 import { env } from "@/data/env/server"
 import { db } from "@/drizzle/db"
 import { ProductTable, UserTable } from "@/drizzle/schema"
-import { addUserCourseAccess, addUserCourseAccessNew } from "@/features/courses/db/userAccessCourse"
+import { 
+    //addUserCourseAccess,
+     addUserCourseAccessNew } from "@/features/courses/db/userAccessCourse"
 import { insertPurchaseDB } from "@/features/purchase/db/purchase"
 import { stripeServerClient } from "@/services/stripe/stripeServer"
 import { eq } from "drizzle-orm"
